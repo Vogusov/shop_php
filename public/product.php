@@ -1,9 +1,10 @@
 <?php
-$title = "Каталог";
-$content = "templates/catalog.php";
+$title = "Страница товара";
+$content = "templates/product.php";
+$id = $_GET['id'];
+
 $header = "templates/header.php";
 $footer = "templates/footer.php";
 
-//include "config/config-db.php";
 include "models/model.php";
 include "templates/main.php";
