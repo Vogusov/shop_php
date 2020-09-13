@@ -1,4 +1,7 @@
 @import "footer.css";
+@import "items.css";
+@import "product.css";
+@import "comments.css";
 
 *,
 *::after,
@@ -24,13 +27,6 @@ body {
     color: #000;
     background-color: #fff;
     height: 100px;
-}
-
-h3 {
-    font-size: 32px;
-    line-height: 110%;
-    text-align: center;
-    letter-spacing: 0.02em;
 }
 
 a {
@@ -65,6 +61,7 @@ a {
 }
 .nav ul li:hover a {
     color: #A99462;
+    border-bottom: 1px solid #A99462;
 }
 
 .main__nav {

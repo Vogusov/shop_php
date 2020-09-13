@@ -27,6 +27,7 @@
         <li><a href="catalog.php">Каталог</a></li>
         <li><a href="comments.php">Отзывы</a></li>
         <li><a href="#!">Контакты</a></li>
+        <li><a href="#!">Админка</a></li>
       </ul>
     </nav>
 
