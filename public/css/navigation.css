@@ -1,0 +1,25 @@
+.nav {
+    border-bottom: 1px solid #fff;
+    height: 45px;
+}
+.nav ul {
+    line-height: 45px;
+    list-style: none;
+}
+.nav ul li {
+    cursor: pointer;
+}
+.nav ul li:hover a {
+    color: #A99462;
+    border-bottom: 1px solid #A99462;
+}
+
+.main__nav {
+    padding: 0px 50px;
+}
+.main__nav ul {
+    display: flex;
+    justify-content: space-between;
+}
+
+

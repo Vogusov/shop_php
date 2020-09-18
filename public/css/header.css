@@ -1,0 +1,41 @@
+/*header*/
+
+.header {
+    width: 100%;
+    padding-top: 20px;
+    color: #000;
+    background: transparent;
+    /*position: fixed;*/
+    /*top: 0;*/
+    z-index: 100;
+}
+
+.header__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #000;
+    padding-bottom: 20px;
+}
+.header__content .header__block1 {
+    flex: 0 0 25%;
+    display: flex;
+    justify-content: flex-start;
+}
+.header__content .header__block2 {
+    flex: 0 0 50%;
+    display: flex;
+    justify-content: center;
+}
+.header__content .header__block2 img {
+    margin-right: 10px;
+}
+.header__content .header__block3 {
+    flex: 0 0 25%;
+    display: flex;
+    justify-content: flex-end;
+}
+.header__content .header__block3 img {
+    margin-right: 10px;
+}

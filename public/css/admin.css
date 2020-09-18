@@ -1,0 +1,8 @@
+.admin-table__img{
+    width: 100px;
+}
+
+.edit__container{
+    display: flex;
+    justify-content: space-around;
+}

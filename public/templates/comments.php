@@ -3,6 +3,7 @@
 
 <div class="new-comment-form">
   <h3>Здесь можно написать комментарий:</h3>
+  <h2 style="color:green;"><?= $success ?></h2>
 
   <div class="form-container">
     <form action="form.php" method="POST">
@@ -18,7 +19,7 @@
         <label for="text">Напишите комментарий:</label>
         <textarea id="text" rows="5" cols="50" name="text" required></textarea>
       </fieldset>
-      <input type="submit" value="Опубликовать!">
+      <input type="submit" name="post_comment" value="Опубликовать!">
 
     </form>
   </div>
@@ -30,7 +31,9 @@
 
   <?php
   $comments = getAllComments($link);
-  if ($comments) {
+  if (!$comments):?>
+    <p>Комментариев нет. Оставьте первый отзыв.</p>
+  <?php elseif ($comments):
     foreach ($comments as $comment):?>
 
       <div class="comment">
@@ -40,6 +43,6 @@
       </div>
 
     <?php endforeach; ?>
-  <?php } ?>
+  <?php endif; ?>
 
 </div>
