@@ -1,11 +1,15 @@
 <?php
 /* database */
-define("MYSQL_SERVER", "localhost");
-define("MYSQL_USER", "root");
-define("MYSQL_PASSWORD", "root");
-define("MYSQL_DB", "shop");
+define('MYSQL_SERVER', 'localhost');
+define('MYSQL_USER', 'root');
+define('MYSQL_PASSWORD', 'root');
+define('MYSQL_DB', 'shop');
 
-/* paths не работает!  */
+
+
+/* paths */
+
+// не работает такой путь:
 //define('ROOT_PATH', $_SERVER['DOCUMENT_ROOT'].'/public/');
 
 define('ROOT_PATH', '/public/');

@@ -3,7 +3,7 @@
 
 <div class="new-comment-form">
   <h3>Здесь можно написать комментарий:</h3>
-  <h2 style="color:green;"><?= $success ?></h2>
+<!--  <h2 style="color:green;">--><?//= $success ?><!--</h2>-->
 
   <div class="form-container">
     <form action="form.php" method="POST">
@@ -12,8 +12,8 @@
         <input id="name" type="text" name="name" required>
       </fieldset>
       <fieldset>
-        <label for="phone">Ваш номер телефона:</label>
-        <input id="phone" type="text" name="phone" required>
+        <label for="email">Ваш номер телефона:</label>
+        <input id="email" type="email" name="email" required>
       </fieldset>
       <fieldset>
         <label for="text">Напишите комментарий:</label>
@@ -40,6 +40,7 @@
         <p>Имя: <?= $comment['user_name']; ?></p>
         <p>Отзыв: <?= $comment['comment']; ?></p>
         <p>Дата: <?= $comment['date']; ?></p>
+        <p>email: <?= $comment['email']; ?></p>
       </div>
 
     <?php endforeach; ?>
