@@ -11,6 +11,7 @@ define('MYSQL_DB', 'shop');
 
 // не работает такой путь:
 //define('ROOT_PATH', $_SERVER['DOCUMENT_ROOT'].'/public/');
+//можно посмотреть в templates/main.php на примере подключения стилей
 
 define('ROOT_PATH', '/public/');
 define('STYLES_CSS', ROOT_PATH . 'css/style.css');

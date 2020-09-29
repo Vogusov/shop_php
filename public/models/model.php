@@ -82,22 +82,23 @@ function saveCommentToDb($link, $id, $user_name, $comment, $date, $email)
   /* Админка */
 
 /* Удаление товара из БД */
-function deleteGoods($link, int $id){
+
+function deleteGoodsFromDB($link, int $id){
   $id = (int)$id;
-  if ($id == 0)
+  if (!$id)
     return false;
 
-  $query = sprintf("DELETE FROM 'goods' where id='$id'");
+  $query = sprintf("DELETE FROM `goods` where id='$id'");
   $result = mysqli_query($link, $query);
 
   if(!$result) die (mysqli_error($link));
-  return mysqli_affected_rows('$link');
+  return mysqli_affected_rows($link);
 }
 
 
 /* Изменение товара в БД */
 
-function editProduct($link, $id, $name, $price, $description) {
+function editProductInDB($link, $id, $name, $price, $description) {
   $id = (int)$id;
   $str = "update `goods` set name='%s', price='%d', description='%s' where id='$id'";
   $query = sprintf($str, mysqli_escape_string($link, $name), mysqli_escape_string($link, $price), mysqli_escape_string($link, $description));
@@ -110,7 +111,7 @@ function editProduct($link, $id, $name, $price, $description) {
 
 /*Создания нового товара*/
 
-function addNewProduct($link, $id, $name, $price, $description, $img_name) {
+function addNewProductToDB($link, $id, $name, $price, $description, $img_name) {
   $str = "insert into `goods` (`id`, `name`, `price`, `description`, `img_name`) values (null, '%s', '%d', '%s', null)";
   $query = sprintf($str, mysqli_escape_string($link, $id), mysqli_escape_string($link, $name), mysqli_escape_string($link, $price), mysqli_escape_string($link, $description), mysqli_escape_string($link, $img_name));
   $result = mysqli_query($link, $query);
@@ -118,3 +119,4 @@ function addNewProduct($link, $id, $name, $price, $description, $img_name) {
   if (!$result) die (mysqli_error($link));
   return mysqli_affected_rows('$link');
 }
+

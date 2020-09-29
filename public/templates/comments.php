@@ -12,7 +12,7 @@
         <input id="name" type="text" name="name" required>
       </fieldset>
       <fieldset>
-        <label for="email">Ваш номер телефона:</label>
+        <label for="email">Ваш email:</label>
         <input id="email" type="email" name="email" required>
       </fieldset>
       <fieldset>

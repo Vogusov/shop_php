@@ -25,8 +25,8 @@
         <td><?= $product['price']; ?></td>
         <td><?= $product['description']; ?></td>
         <td><?= $product['img_name']; ?></td>
-        <td><a href="admin-edit-product.php?id=<?=$product['id']?>">Редактировать</a></td>
-        <td><a href="admin-delete-product.php?id=<?=$product['id']?>">Удалить</a></td>
+        <td><a href="admin-edit-product.php?action=edit&id=<?=$product['id'] ?>">Редактировать</a></td>
+        <td><a href="admin-edit-product.php?action=delete&id=<?=$product['id'] ?>">Удалить</a></td>
       </tr>
 
 
