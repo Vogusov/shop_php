@@ -14,7 +14,7 @@
 <div class="wrapper">
 
   <?php
-  //print_r(STYLES_CSS);
+
   include (string)$header;
   ?>
 
