@@ -17,3 +17,7 @@ define('ROOT_PATH', '/public/');
 define('STYLES_CSS', ROOT_PATH . 'css/style.css');
 define('IMAGES_PATH', ROOT_PATH . 'images/catalog/');
 define('IMAGES_SM_PATH', ROOT_PATH . 'images/catalog_sm/');
+
+
+// размер маленькой картинки товара для каталога.
+define('IMG_SM_SIZE', 50);

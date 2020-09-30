@@ -16,8 +16,10 @@
         <input type="text" name="product-price" value="<?= $product['price']; ?>"><br>
         <textarea cols="20" rows="5" name="product-description"><?= $product['description']; ?></textarea><br>
         <input type="hidden" name="MAX_FILE_SIZE" value="30000"/>
-        <input type="file" name="product-image" disabled>
+        <p>Загрузите картинку 300x300px:</p>
+        <input type="file" name="product-image" accept="image/jpeg,image/png,image/gif">
         <input type="hidden" name="product-id" value="<?= $product['id']; ?>">
+        <input type="hidden"  name="product-img-name" value="<?= $product['img_name']; ?>">
         <input type="submit" name="edit-product" value="Сохранить">
       </form>
     </div>

@@ -98,10 +98,10 @@ function deleteGoodsFromDB($link, int $id){
 
 /* Изменение товара в БД */
 
-function editProductInDB($link, $id, $name, $price, $description) {
+function editProductInDB($link, $id, $name, $price, $description, $img_name) {
   $id = (int)$id;
-  $str = "update `goods` set name='%s', price='%d', description='%s' where id='$id'";
-  $query = sprintf($str, mysqli_escape_string($link, $name), mysqli_escape_string($link, $price), mysqli_escape_string($link, $description));
+  $str = "update `goods` set name='%s', price='%d', description='%s', img_name='%s' where id='$id'";
+  $query = sprintf($str, mysqli_escape_string($link, $name), mysqli_escape_string($link, $price), mysqli_escape_string($link, $description), mysqli_escape_string($link, $img_name));
   $result = mysqli_query($link, $query);
 
   if (!$result) die (mysqli_error($link));
