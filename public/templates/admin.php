@@ -1,5 +1,8 @@
 <h1>Админка</h1>
 
+<p class="adding-product">
+  <a href="admin-edit-product.php?action=add">>Добавить новый товар<</a>
+</p>
 
 <table class="admin-table" style='text-align:center;' border='1' width='100%'>
   <tr>
