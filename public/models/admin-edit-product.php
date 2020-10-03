@@ -28,7 +28,6 @@ if (isset ($_GET['action'])) {
 
 } // со страницы редактирования товара запрос на изменение:
 elseif (isset ($_POST['edit-product'])) {
-//  $action = $_POST['edit-product'];
 
   //img:
   //todo: проверять нет ли такого же имени файла в БД!!
@@ -58,9 +57,6 @@ elseif (isset ($_POST['edit-product'])) {
       // копируем картинку в нашу папку, уменьшаем и копируем в папку с маленькими
       if (copy($_FILES['product-image']['tmp_name'], $path)) {
         resize($path, $path_sm, IMG_SM_SIZE);
-//        $sql = "insert into `images` (`name`, `size`) values ('$file_name', $file_size)";
-//        mysqli_query($link, $sql);
-//        mysqli_close($link);
         echo "Файл загружен! <br>";
       } else {
         echo "Обшибка при загрузке файла";
@@ -90,12 +86,11 @@ elseif (isset ($_POST['edit-product'])) {
 // Добавлени нового товара в БД
 
 elseif (isset ($_POST['add-product'])) {
-//  $action = $_POST['add-product'];
-  $id = (int)trim(strip_tags($_POST['product-id']));
+//  $id = (int)trim(strip_tags($_POST['product-id']));
   $productName = (string)trim(strip_tags($_POST['product-name']));
   $productPrice = (int)trim(strip_tags($_POST['product-price']));
   $productDescription = (string)trim(strip_tags($_POST['product-description']));
-  $productImgName = (string)trim(strip_tags($_POST['product-img-name']));
+//  $productImgName = (string)trim(strip_tags($_POST['product-img-name']));
 
   if (isset($_FILES['product-image'])) {
     print_r($_FILES['product-image']);
@@ -103,7 +98,7 @@ elseif (isset ($_POST['add-product'])) {
     $img_file_name = translit($_FILES['product-image']['name']);
     $path = IMAGES_PATH . $img_file_name;
     $path_sm = IMAGES_SM_PATH . $img_file_name;
-    $file_size = $_FILES['product-image']['size'];
+//    $file_size = $_FILES['product-image']['size'];
 
     print_r($path);
     var_dump($_FILES['product-image']['tmp_name']);
@@ -123,21 +118,22 @@ elseif (isset ($_POST['add-product'])) {
       // копируем картинку в нашу папку, уменьшаем и копируем в папку с маленькими
       if (copy($_FILES['product-image']['tmp_name'], $path)) {
         resize($path, $path_sm, IMG_SM_SIZE);
-//        $sql = "insert into `images` (`name`, `size`) values ('$file_name', $file_size)";
-//        mysqli_query($link, $sql);
-//        mysqli_close($link);
         echo "Файл загружен! <br>";
+
+        $productImgName = $img_file_name;
+        $content = 'templates/admin.php';
+
+        echo 'Successfully edited' . addNewProductToDB($link, $productName, $productPrice, $productDescription, $productImgName) . ' product';
       } else {
         echo "Обшибка при загрузке файла";
       }
     }
   }
 
-  echo addNewProductToDB($link, $id, $productName, $productPrice, $productDescription, $productImgName);
+//  echo addNewProductToDB($link, $id, $productName, $productPrice, $productDescription, $productImgName);
   }
 
 
  else {
   echo 'что-то не так с изменением товара!';
 }
-

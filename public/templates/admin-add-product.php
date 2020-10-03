@@ -9,8 +9,11 @@
 
     <div class="edit__form">
       <form action="admin-edit-product.php" method="post" enctype="multipart/form-data">
+        <p>Название: </p>
         <input type="text" name="product-name" value=""><br>
+        <p>Цена: </p>
         <input type="text" name="product-price" value=""><br>
+        <p>Описание: </p>
         <textarea cols="20" rows="5" name="product-description"></textarea><br>
         <input type="hidden" name="MAX_FILE_SIZE" value="30000"/>
         <p>Загрузите картинку 300x300px:</p>

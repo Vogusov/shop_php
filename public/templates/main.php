@@ -1,4 +1,4 @@
-<?php include "config/config.php" /* для стилей */?>
+<?php include "models/config/config.php" /* для стилей */?>
 <!doctype html>
 <html lang="en">
 <body>

@@ -111,9 +111,9 @@ function editProductInDB($link, $id, $name, $price, $description, $img_name) {
 
 /*Создания нового товара*/
 
-function addNewProductToDB($link, $id, $name, $price, $description, $img_name) {
-  $str = "insert into `goods` (`id`, `name`, `price`, `description`, `img_name`) values (null, '%s', '%d', '%s', '%s')";
-  $query = sprintf($str, mysqli_escape_string($link, $id), mysqli_escape_string($link, $name), mysqli_escape_string($link, $price), mysqli_escape_string($link, $description), mysqli_escape_string($link, $img_name));
+function addNewProductToDB($link, $name, $price, $description, $img_name) {
+  $str = "insert into `goods` (`name`, `price`, `description`, `img_name`) values ('%s', '%d', '%s', '%s')";
+  $query = sprintf($str, mysqli_escape_string($link, $name), mysqli_escape_string($link, $price), mysqli_escape_string($link, $description), mysqli_escape_string($link, $img_name));
   $result = mysqli_query($link, $query);
 
   if (!$result) die (mysqli_error($link));
