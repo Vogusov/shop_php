@@ -4,6 +4,9 @@
   <a href="admin-edit-product.php?action=add">>Добавить новый товар<</a>
 </p>
 
+<!--todo: добавить подсчет товаров-->
+<!--<p>В базе --><?//= $goodsCount; ?><!-- товаров.</p>-->
+
 <table class="admin-table" style='text-align:center;' border='1' width='100%'>
   <tr>
     <td><p>id</p></td>
@@ -15,7 +18,7 @@
   </tr>
 
   <?php
-  $goods = getGoods($link);
+  $goods = getGoods($link, 'desc');
   //print_r($goods);
   if ($goods) :?>
     <?php foreach ($goods as $product):?>

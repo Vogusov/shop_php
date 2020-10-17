@@ -83,16 +83,18 @@ elseif (isset ($_POST['edit-product'])) {
 // todo: сделать редактирование товара с загрузкой фото!!!
 
 }
+
+
 // Добавлени нового товара в БД
 
 elseif (isset ($_POST['add-product'])) {
-//  $id = (int)trim(strip_tags($_POST['product-id']));
   $productName = (string)trim(strip_tags($_POST['product-name']));
   $productPrice = (int)trim(strip_tags($_POST['product-price']));
   $productDescription = (string)trim(strip_tags($_POST['product-description']));
-//  $productImgName = (string)trim(strip_tags($_POST['product-img-name']));
 
   if (isset($_FILES['product-image'])) {
+    // todo: удалить эти выводы
+    echo 'Product image is: ';
     print_r($_FILES['product-image']);
 
     $img_file_name = translit($_FILES['product-image']['name']);
@@ -104,12 +106,18 @@ elseif (isset ($_POST['add-product'])) {
     var_dump($_FILES['product-image']['tmp_name']);
     var_dump(translit($_FILES['product-image']['name']));
 
+    // если нет картинки, то делаем запрос к бд без нее.
     if ($_FILES['product-image']['error']) {
-      echo 'Ошибка загрузки файла';
+      $prodImgErr = $_FILES['product-image']['error'];
+      echo "Файл не был загружен. Ошибка: $prodImgErr";
+      if ($_FILES['product-image']['error'] === 4)
+        echo 'Successfully edited' . addNewProductToDB($link, $productName, $productPrice, $productDescription, null) . ' product';
+      $content = 'templates/admin.php';
+
     } elseif ($_FILES['product-image']['size'] > 1000000) {
       echo "Файл слишком большой. Заргружаемый файл должен быть не больше 1Мб <br> <a href=\"index.php\">К галерее</a>";
     } elseif (strlen($img_file_name) > 30) {
-      echo "Имя файла слишком длинное. Переименуйте файл перед загрузкой. Имя файла должно быть короче 26 символов.";
+      echo "Имя файла слишком длинное. Переименуйте файл перед загрузкой. Имя файла должно быть короче 30 символов.";
     } elseif (
       $_FILES['product-image']['type'] == 'image/jpeg' ||
       $_FILES['product-image']['type'] == 'image/png' ||
@@ -128,6 +136,8 @@ elseif (isset ($_POST['add-product'])) {
         echo "Обшибка при загрузке файла";
       }
     }
+
+
   }
 
 //  echo addNewProductToDB($link, $id, $productName, $productPrice, $productDescription, $productImgName);

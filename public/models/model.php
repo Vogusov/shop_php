@@ -6,9 +6,9 @@ include "config/config-db.php";
   /* Каталог: */
 
 /*Получение массива со всеми товарами*/
-function getGoods($link)
+function getGoods($link, $order='asc')
 {
-  $query = "select * from `goods`";
+  $query = "select * from `goods` order by `id` $order";
   $result = mysqli_query($link, $query);
   if (!$result)
     die(mysqli_error($link));
@@ -25,6 +25,7 @@ function getGoods($link)
 //    $goods[] = $product;
 //  }
 }
+
 
 
 /*Получение данных одного товара по id*/
