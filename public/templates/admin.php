@@ -5,7 +5,7 @@
 </p>
 
 <!--todo: добавить подсчет товаров-->
-<!--<p>В базе --><?//= $goodsCount; ?><!-- товаров.</p>-->
+<p>В базе <?= $goodsCount; ?> товаров.</p>
 
 <table class="admin-table" style='text-align:center;' border='1' width='100%'>
   <tr>

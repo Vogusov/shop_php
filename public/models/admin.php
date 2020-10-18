@@ -5,3 +5,4 @@ $content = 'templates/admin.php';
 $header = 'templates/header.php';
 $footer = 'templates/footer.php';
 
+$goodsCount = countGoods($link);
