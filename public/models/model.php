@@ -40,6 +40,17 @@ function getProductById($link, $id)
 }
 
 
+/* Подсчет товаров */
+function countGoods($link) {
+  $query = 'select count(`id`) as count from `goods`';
+  $result = mysqli_query($link, $query);
+  if (!$result)
+    die(mysqli_error($link));
+  $goodsCount = mysqli_fetch_row($result);
+  return $goodsCount[0];
+}
+
+
 
   /* Отзывы: */
 
