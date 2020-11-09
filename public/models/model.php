@@ -2,12 +2,10 @@
 include "config/config-db.php";
 
 
-
-  /* Каталог: */
+/* Каталог: */
 
 /*Получение массива со всеми товарами*/
-function getGoods($link, $order='asc')
-{
+function getGoods($link, $order = 'asc') {
   $query = "select * from `goods` order by `id` $order";
   $result = mysqli_query($link, $query);
   if (!$result)
@@ -27,10 +25,8 @@ function getGoods($link, $order='asc')
 }
 
 
-
 /*Получение данных одного товара по id*/
-function getProductById($link, $id)
-{
+function getProductById($link, $id) {
   $query = "select * from `goods` where `id` = $id";
   $result = mysqli_query($link, $query);
   if (!$result)
@@ -51,12 +47,10 @@ function countGoods($link) {
 }
 
 
-
-  /* Отзывы: */
+/* Отзывы: */
 
 /* Получение всех комментариев */
-function getAllComments($link)
-{
+function getAllComments($link) {
   $query = "select * from `comments` order by `id` desc";
   $result = mysqli_query($link, $query);
   if (!$result)
@@ -69,8 +63,7 @@ function getAllComments($link)
 
 
 /* Запись комментария в БД */
-function saveCommentToDb($link, $id, $user_name, $comment, $date, $email)
-{
+function saveCommentToDb($link, $id, $user_name, $comment, $date, $email) {
   $str = "insert into `comments` (`id`, `user_name`, `comment`, `date`, `email`) values (null, '%s', '%s', '%s', '%s')";
   $query = sprintf($str, mysqli_escape_string($link, $user_name), mysqli_escape_string($link, $comment), mysqli_escape_string($link, $date), mysqli_escape_string($link, $email));
   $result = mysqli_query($link, $query);
@@ -90,12 +83,11 @@ function saveCommentToDb($link, $id, $user_name, $comment, $date, $email)
 //}
 
 
-
-  /* Админка */
+/*-- Админка --*/
 
 /* Удаление товара из БД */
 
-function deleteGoodsFromDB($link, int $id){
+function deleteGoodsFromDB($link, int $id) {
   $id = (int)$id;
   if (!$id)
     return false;
@@ -103,7 +95,7 @@ function deleteGoodsFromDB($link, int $id){
   $query = sprintf("DELETE FROM `goods` where id='$id'");
   $result = mysqli_query($link, $query);
 
-  if(!$result) die (mysqli_error($link));
+  if (!$result) die (mysqli_error($link));
   return mysqli_affected_rows($link);
 }
 
@@ -132,3 +124,66 @@ function addNewProductToDB($link, $name, $price, $description, $img_name) {
   return mysqli_affected_rows($link);
 }
 
+
+
+
+
+/*-- Регистрация, авторизация --*/
+// todo: сделать проверку на единство пары Логин-Пароль при регистрации и в БД;
+function authorize($link, $login, $pass, $remember) {
+  $query = "select `id`, `role` from `users` where `login` = '$login' and `password` = '$pass'";
+  $result = mysqli_query($link, $query) or die('Error in auth request: ' . mysqli_error($link));
+  if (!$result) die (mysqli_error($link));
+
+  $userData = mysqli_fetch_assoc($result);
+  $role = $userData['role'];
+
+//  if($remember){
+    if(mysqli_num_rows($result) == 1){
+      setcookie('login', $login);
+      setcookie('pass', $pass);
+      setcookie('role', $role);
+      header('Location: registration.php?success&remember');
+    } else {
+      echo "Вы не зарегистрированны. Зарегистрируйтесь";
+    }
+//  } else {
+//    header('Location: registration.php?success');
+//  }
+
+  return $userData;
+}
+
+
+
+
+
+/*-- Корзина --*/
+
+/* Добавить в корзину (в БД) */
+function addToCart($link, $id) {
+  $query = "insert into `cart` (`id_product`) value ('$id')";
+//  $query = sprintf($str, mysqli_escape_string($link, $id), 1);
+  $result = mysqli_query($link, $query);
+
+  if (!$result) die (mysqli_error($link));
+  return mysqli_affected_rows($link);
+}
+
+
+/* Показать все товары из корзины */
+function getGoodsFromCart($link) {
+  $query = "select `id` from `cart`";
+  $result = mysqli_query($link, $query);
+  if (!$result)
+    die(mysqli_error($link));
+
+  $rows = mysqli_num_rows($result);
+  $goods = [];
+
+  for ($i = 0; $i < $rows; $i++) {
+    $row = mysqli_fetch_assoc($result);
+    $goods[] = $row;
+  }
+  return $goods;
+}

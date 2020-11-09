@@ -19,7 +19,6 @@
 
   <?php
   $goods = getGoods($link, 'desc');
-  //print_r($goods);
   if ($goods) :?>
     <?php foreach ($goods as $product):?>
 

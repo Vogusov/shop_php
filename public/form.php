@@ -1,5 +1,5 @@
 <?php
 
 include 'models/model.php';
-include 'config/config-db.php';
+include 'models/config/config-db.php';
 include 'models/form.php';

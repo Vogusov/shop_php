@@ -7,3 +7,24 @@ if (isset($_POST['post_comment'])) {
 
 
 
+// авторизация пользователей:
+if (isset($_POST['login'])) {
+  $login = strip_tags(trim($_POST['login']));
+  $pass = $_POST['pass'] ? strip_tags(trim($_POST['pass'])) : "";
+  $remember = $_POST['remember-me'];
+
+  $userData = authorize($link, $login, $pass, $remember);
+  $role = $userData['role'];
+
+//  if(mysqli_num_rows($result) == 1){
+//    setcookie('login', $login);
+//    setcookie('pass', $pass);
+//    setcookie('role', $role);
+//    header('Location: registration.php?success');
+//  } else {
+//    echo "Вы не зарегистрированны. Зарегистрируйтесь";
+//  }
+}
+
+
+

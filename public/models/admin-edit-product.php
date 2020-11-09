@@ -32,16 +32,16 @@ elseif (isset ($_POST['edit-product'])) {
   //img:
   //todo: проверять нет ли такого же имени файла в БД!!
   if (isset($_FILES['product-image'])) {
-    print_r($_FILES['product-image']);
+//    print_r($_FILES['product-image']);
 
     $img_file_name = translit($_FILES['product-image']['name']);
     $path = IMAGES_PATH . $img_file_name;
     $path_sm = IMAGES_SM_PATH . $img_file_name;
     $file_size = $_FILES['product-image']['size'];
 
-    print_r($path);
-    var_dump($_FILES['product-image']['tmp_name']);
-    var_dump(translit($_FILES['product-image']['name']));
+//    print_r($path);
+//    var_dump($_FILES['product-image']['tmp_name']);
+//    var_dump(translit($_FILES['product-image']['name']));
 
     if ($_FILES['product-image']['error']) {
       echo 'Ошибка загрузки файла';
@@ -80,8 +80,6 @@ elseif (isset ($_POST['edit-product'])) {
 
     echo 'Successfully edited' . editProductInDB($link, $id, $productName, $productPrice, $productDescription, $productImgName) . ' product';
   }
-// todo: сделать редактирование товара с загрузкой фото!!!
-
 }
 
 
@@ -92,19 +90,16 @@ elseif (isset ($_POST['add-product'])) {
   $productPrice = (int)trim(strip_tags($_POST['product-price']));
   $productDescription = (string)trim(strip_tags($_POST['product-description']));
 
+
   if (isset($_FILES['product-image'])) {
-    // todo: удалить эти выводы
-    echo 'Product image is: ';
-    print_r($_FILES['product-image']);
 
     $img_file_name = translit($_FILES['product-image']['name']);
     $path = IMAGES_PATH . $img_file_name;
     $path_sm = IMAGES_SM_PATH . $img_file_name;
-//    $file_size = $_FILES['product-image']['size'];
 
-    print_r($path);
-    var_dump($_FILES['product-image']['tmp_name']);
-    var_dump(translit($_FILES['product-image']['name']));
+//    print_r($path);
+//    var_dump($_FILES['product-image']['tmp_name']);
+//    var_dump(translit($_FILES['product-image']['name']));
 
     // если нет картинки, то делаем запрос к бд без нее.
     if ($_FILES['product-image']['error']) {

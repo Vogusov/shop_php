@@ -14,26 +14,37 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     border-bottom: 1px solid #000;
     padding-bottom: 20px;
 }
-.header__content .header__block1 {
-    flex: 0 0 25%;
+
+.header__block{
     display: flex;
+    flex-wrap: nowrap;
+}
+
+.header__block.header__reg {
+    padding: 5px 10px;
+    border-left: 1px solid black;
+}
+
+.header__content .header__block1 {
+    /*flex: 0 0 25%;*/
+    /*display: flex;*/
     justify-content: flex-start;
 }
 .header__content .header__block2 {
-    flex: 0 0 50%;
-    display: flex;
+    /*flex: 0 0 50%;*/
+    /*display: flex;*/
     justify-content: center;
 }
 .header__content .header__block2 img {
     margin-right: 10px;
 }
 .header__content .header__block3 {
-    flex: 0 0 25%;
-    display: flex;
+    /*flex: 0 0 25%;*/
+    /*display: flex;*/
     justify-content: flex-end;
 }
 .header__content .header__block3 img {

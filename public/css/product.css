@@ -3,3 +3,8 @@
     height: 200px;
     border: 1px solid black;
 }
+
+.product .buy_button{
+    width: 200px;
+    padding: 10px 0;
+}
