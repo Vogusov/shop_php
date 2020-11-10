@@ -1,4 +1,4 @@
-<h1>Регистрация</h1>
+<h1>Вход</h1>
 
 <?php
 if(isset($_GET['success']) && isset($_COOKIE['login'])):?>

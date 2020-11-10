@@ -24,7 +24,7 @@
     flex-wrap: nowrap;
 }
 
-.header__block.header__reg {
+.header__reg {
     padding: 5px 10px;
     border-left: 1px solid black;
 }
