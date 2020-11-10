@@ -21,3 +21,6 @@ define('IMAGES_SM_PATH', 'images/catalog_sm/');
 
 // размер маленькой картинки товара для каталога.
 define('IMG_SM_SIZE', 50);
+
+// salt
+define('SALT', 'db52!d04dc%20');

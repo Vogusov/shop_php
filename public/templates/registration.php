@@ -10,6 +10,14 @@ if(isset($_GET['success']) && isset($_COOKIE['login'])):?>
 <!--  <h2>Нету куков</h2>-->
 <?php endif; ?>
 
+<p>
+  Здравствуйте, посетитель, вы видели эту страницу <?= $_SESSION['count']; ?> раз.</br>
+
+</p>
+<?= SID; ?>
+<?= session_id(); ?>
+
+
 
 <form action="form.php" method="post">
   <p>admin</p>

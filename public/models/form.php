@@ -10,7 +10,8 @@ if (isset($_POST['post_comment'])) {
 // авторизация пользователей:
 if (isset($_POST['login'])) {
   $login = strip_tags(trim($_POST['login']));
-  $pass = $_POST['pass'] ? strip_tags(trim($_POST['pass'])) : "";
+  $pass = isset($_POST['pass']) ? md5(SALT . strip_tags(trim($_POST['pass'])) . SALT) : "";
+//  echo ":$pass:";
   $remember = $_POST['remember-me'];
 
   $userData = authorize($link, $login, $pass, $remember);
