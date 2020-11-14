@@ -19,7 +19,8 @@
       </div>
 
       <div class="header__block header__reg">
-        <a href="/public/registration.php">Войти / Зарегистрироваться</a>
+        <p><a href="/public/registration.php">Войти / Зарегистрироваться</a></p>
+        <p>Номер сессии: <?= session_id(); ?></p>
       </div>
     </div>
 

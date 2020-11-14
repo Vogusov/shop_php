@@ -25,8 +25,13 @@
 }
 
 .header__reg {
+    display: block;
     padding: 5px 10px;
     border-left: 1px solid black;
+}
+
+.header__reg a {
+    text-decoration: underline;
 }
 
 .header__content .header__block1 {

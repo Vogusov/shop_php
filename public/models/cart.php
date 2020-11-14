@@ -5,7 +5,10 @@ $content = 'templates/cart.php';
 $header = 'templates/header.php';
 $footer = 'templates/footer.php';
 
-if (isset($_GET['id'])) {
-  echo $id = $_GET['id'];
-  addToCart($link, $id);
+
+
+if (isset($_POST['ID'])) {
+  $product_id = $_POST['ID'];
+  $session_id = session_id();
+  addToCart($link, $product_id, $session_id);
 }

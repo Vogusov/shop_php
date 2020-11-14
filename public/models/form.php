@@ -14,7 +14,7 @@ if (isset($_POST['login'])) {
 //  echo ":$pass:";
   $remember = $_POST['remember-me'];
 
-  $userData = authorize($link, $login, $pass, $remember);
+  $userData = authorize($link, $login, $pass);
   $role = $userData['role'];
 
 //  if(mysqli_num_rows($result) == 1){

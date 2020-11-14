@@ -9,9 +9,9 @@
     foreach ($goods as $product):
       ?>
 
-      <div id="<?= $product['id'] ?>" class="item">
-        <a href="product.php?id=<?= $product['id'] ?>">
-          <img src="<?= IMAGES_SM_PATH . $product['img_name'] ?>" class="item__img" alt="">
+      <div id="<?= $product['id']; ?>" class="item">
+        <a href="product.php?id=<?= $product['id']; ?>">
+          <img src="<?= IMAGES_SM_PATH . $product['img_name']; ?>" class="item__img" alt="">
         </a>
         <p class="product_name">
           <?= $product['name']; ?>
@@ -19,8 +19,9 @@
         <p class="product_price">
           <?= $product['price']; ?>
         </p>
-        <div class="buy_button">
-          <a href="cart.php?id=<?= $product['id'] ?>">Добавить в корзину</a>
+        <div class="buy_button add-to-cart" data-id="<?= $product['id']; ?>">
+          <span>Добавить в корзину</span>
+<!--          <a href="cart.php?id=--><?//= $product['id'] ?><!--">Добавить в корзину</a>-->
         </div>
       </div>
 

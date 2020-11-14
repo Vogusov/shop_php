@@ -1,7 +1,11 @@
-<?php include "models/config/config.php" /* для стилей */?>
+<?php
+
+include "models/config/config.php"; /* для стилей */
+?>
+
 <!doctype html>
 <html lang="en">
-<body>
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport"
@@ -9,8 +13,12 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title><?= $title ?></title>
   <link rel="stylesheet" href="<?= STYLES_CSS; ?>">
-<!--  <link rel="stylesheet" href="/public/css/style.css">-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <!--  <link rel="stylesheet" href="/public/css/style.css">-->
 </head>
+
+<body>
 <div class="wrapper">
 
   <?php
@@ -32,6 +40,7 @@
 </div>
 
 
+<script src="js/script.js" ></script>
 
 </body>
 

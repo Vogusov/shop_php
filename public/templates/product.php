@@ -10,8 +10,9 @@
   <p><?= $product['name']; ?></p>
   <p><?= $product['price']; ?></p>
   <p><?= $product['description']; ?></p>
-  <div class="buy_button">
-    <a href="cart.php?id=<?= $product['id'] ?>">Добавить в корзину</a>
+  <div class="buy_button add-to-cart" data-id="<?= $id; ?>">
+    <span>Добавить в корзину</span>
+<!--    <a href="cart.php?id=--><?//= $product['id'] ?><!--">Добавить в корзину</a>-->
   </div>
 </div>
 <?php endif; ?>
