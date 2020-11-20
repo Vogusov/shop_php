@@ -164,7 +164,6 @@ function addToCart($link, $product_id, $session_id) {
     $result = mysqli_query($link, $query);
     if (!$result) die (mysqli_error($link));
 
-
     // Если есть, то увеличиваем его колличество
   } elseif ($count = 1) {
 
@@ -180,8 +179,7 @@ function addToCart($link, $product_id, $session_id) {
 }
 
 
-
-/* Подсчет данного товара с данной сессией в корзине */
+/* Определение наличия товара в корзине */
 function searchProductInCart($link, $product_id, $session_id) {
   $query = "select count(`product_id`) from `cart` where `product_id` = '$product_id' AND `session_id` = '$session_id'";
   $result = mysqli_query($link, $query);
@@ -193,20 +191,59 @@ function searchProductInCart($link, $product_id, $session_id) {
 }
 
 
+/* Определение кол-ва товара в корзине */
+//function getProductQuantityInCart($link, $product_id, $session_id) {
+//  $query = "select `quantity` from `cart` where `product_id` = '$product_id' AND `session_id` = '$session_id'";
+//  $result = mysqli_query($link, $query);
+//
+//  if (!$result) die(mysqli_error($link));
+//
+//  $row = mysqli_fetch_assoc($result);
+//  return $row['quantity'];
+//}
+
 
 /* Показать все товары из корзины */
-function getGoodsFromCart($link) {
-  $query = "select `id` from `cart`";
+function getGoodsFromCart($link, $session_id) {
+  $query = "select `goods`.`id` as `product_id`,
+                    `goods`.`name` as `name`,
+		                `goods`.`img_name` as `img`,
+                    `goods`.`price` as `price`,
+                    `cart`.`quantity` as `quantity`,
+                    `cart`.`quantity` * `price` as `total`
+                from `shop`.`cart`
+	              inner join `goods` on `cart`.`product_id` = `goods`.`id`
+                where `cart`.`session_id` = '$session_id';";
   $result = mysqli_query($link, $query);
   if (!$result)
     die(mysqli_error($link));
 
-  $rows = mysqli_num_rows($result);
-  $goods = [];
-
-  for ($i = 0; $i < $rows; $i++) {
-    $row = mysqli_fetch_assoc($result);
-    $goods[] = $row;
+  while ($product = mysqli_fetch_assoc($result)) {
+    $goods[] = $product;
   }
+
   return $goods;
+}
+
+
+/* Уменьшить кол-во товара в корзине */
+function reduceInCart($link, $product_id, $session_id) {
+  $query = "update `cart` set `quantity` = `quantity` - 1 , `date_time`= null where `product_id` = '$product_id' AND `session_id` = '$session_id'";
+  $result = mysqli_query($link, $query);
+
+  if (!$result) die (mysqli_error($link));
+
+  return mysqli_affected_rows($link);
+}
+
+
+/* Удаление товара из корзины */
+
+function deleteFromCart($link, $product_id, $session_id){
+  $query = "delete from `cart` where `product_id` = '$product_id' AND `session_id` = '$session_id'";
+  $result = mysqli_query($link, $query);
+
+  if (!$result) die (mysqli_error($link));
+
+  return mysqli_affected_rows($link);
 }

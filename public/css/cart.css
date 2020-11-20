@@ -1,0 +1,33 @@
+.cart-table {
+    border: 1px solid black;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.cart-table th,
+.cart-table td {
+    border: 1px solid black;
+    text-align: end;
+    padding: 5px 10px;
+}
+
+.cart-table__img {
+    width: 50px;
+}
+
+.change-quantity {
+    display: inline-block;
+    cursor: pointer;
+    border: 1px solid grey;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    vertical-align: center;
+}
+
+.cart__delete {
+    color: red;
+    font-size: large;
+    font-weight: bold;
+    cursor: pointer;
+}

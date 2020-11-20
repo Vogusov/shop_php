@@ -1,10 +1,11 @@
 <?php
+/* переменные */
+$session_id = session_id();
 
-// публикация отзывов:
+/* публикация отзывов: */
 if (isset($_POST['post_comment'])) {
   saveCommentToDb($link, null, strip_tags(trim($_POST['name'])), strip_tags(trim($_POST['text'])), date("d.F.Y H:i:s"), strip_tags(trim($_POST['email'])));
 }
-
 
 
 // авторизация пользователей:
@@ -28,4 +29,65 @@ if (isset($_POST['login'])) {
 }
 
 
+/* КОРЗИНА */
+if (isset($_POST['ACTION'])) {
+  $action = $_POST['ACTION'];
+  switch ($action) {
 
+
+    /* добавление в корзину */
+    case 'add':
+      if (isset($_POST['ID'])) {
+        $product_id = $_POST['ID'];
+        echo addToCart($link, $product_id, $session_id);
+      }
+      break;
+
+
+    /* изменение колличества */
+    case 'change':
+      if (isset($_POST['PROD_ID']))
+        $product_id = $_POST['PROD_ID'];
+      if (isset($_POST['SIGN']))
+        $sign = $_POST['SIGN'];
+      if (isset($_POST['QNT']))
+        $quantity = (int)$_POST['QNT'];
+
+      // В зависимости от знака, производим операции
+      switch ($sign) {
+        case '+':
+          if (addToCart($link, $product_id, $session_id)) {
+            echo ++$quantity;
+          } else {
+            echo $quantity;
+          }
+          break;
+        case '-':
+          // если товар один в корзине, то удаляем его
+          if ($quantity === 1) {
+            deleteFromCart($link, $product_id, $session_id);
+            echo "0";
+            // если товар не один, то уменьшаем на 1
+          } elseif ($quantity > 1) {
+            if (reduceInCart($link, $product_id, $session_id)) {
+              echo --$quantity;
+            } else {
+              echo $quantity;
+            }
+          }
+          break;
+      }
+
+      break;
+
+
+    /* удаление товара из корзины */
+    case 'delete':
+      if (isset($_POST['ID'])) {
+        $product_id = $_POST['ID'];
+        echo deleteFromCart($link, $product_id, $session_id);
+      }
+
+      break;
+  }
+}
