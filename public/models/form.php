@@ -1,18 +1,17 @@
 <?php
-/* переменные */
+/* ПЕРЕМЕННЫЕ */
 $session_id = session_id();
 
-/* публикация отзывов: */
+/* ПУБЛИКАЦИЯ ОТЗЫВОВ: */
 if (isset($_POST['post_comment'])) {
   saveCommentToDb($link, null, strip_tags(trim($_POST['name'])), strip_tags(trim($_POST['text'])), date("d.F.Y H:i:s"), strip_tags(trim($_POST['email'])));
 }
 
 
-// авторизация пользователей:
+/* АВТОРИЗАЦИЯ ПОЛЬЗОВАТЕЛЕЙ: */
 if (isset($_POST['login'])) {
   $login = strip_tags(trim($_POST['login']));
   $pass = isset($_POST['pass']) ? md5(SALT . strip_tags(trim($_POST['pass'])) . SALT) : "";
-//  echo ":$pass:";
   $remember = $_POST['remember-me'];
 
   $userData = authorize($link, $login, $pass);
@@ -30,6 +29,8 @@ if (isset($_POST['login'])) {
 
 
 /* КОРЗИНА */
+
+/* смотрим, какой ACTION приходит с фронтенда */
 if (isset($_POST['ACTION'])) {
   $action = $_POST['ACTION'];
   switch ($action) {
@@ -87,7 +88,6 @@ if (isset($_POST['ACTION'])) {
         $product_id = $_POST['ID'];
         echo deleteFromCart($link, $product_id, $session_id);
       }
-
       break;
   }
 }

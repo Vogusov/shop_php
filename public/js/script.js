@@ -1,8 +1,10 @@
 // запрос на добавление в корзину
-btn = $('.add-to-cart')
+btn = $('.js-add-to-cart')
 
 btn.click(function (e) {
-  idProduct = $(this).data('id')
+  productId = $(this).data('id')
+  productName = $(this).data('name')
+  console.log('pr name', productName)
 
   $.ajax({
     type: 'POST',
@@ -10,12 +12,12 @@ btn.click(function (e) {
     data:
       {
         ACTION: 'add',
-        ID: idProduct
+        ID: productId
       },
     success: function (data) {
       if (data) {
         console.log('data: ' + data)
-        alert('Товар ' + idProduct + ' добавлен в корзину')
+        alert('Товар ' + productName + ' добавлен в корзину')
       }
     }
   })
@@ -23,7 +25,7 @@ btn.click(function (e) {
 
 
 // запрос на изменение клоличества товара в корзине
-btnChangeQnt = $('.change-quantity')
+btnChangeQnt = $('.js-change-quantity')
 
 btnChangeQnt.click(function (e) {
   sign = $(this).val()
@@ -32,7 +34,7 @@ btnChangeQnt.click(function (e) {
   productId = $(this).closest('tr[data-id]').data('id')
   console.log('id ', productId)
 
-  productQnt = $(this).siblings('.cart__quantity').html()
+  productQnt = $(this).siblings('.js-cart-quantity').html()
   console.log('qnt: ' + productQnt)
 
   $.ajax({
@@ -51,26 +53,29 @@ btnChangeQnt.click(function (e) {
 
       // отключаем уменьшение кол-ва товаров, если 0, и влючаем, если > 0
       data == 0 ?
-        $('.cart-table tr[data-id =' + productId + '] .change-quantity[value="-"]').attr('disabled', true)
-        : $('.cart-table tr[data-id =' + productId + '] .change-quantity[value="-"]').attr('disabled', false)
+        $('.js-cart-table tr[data-id =' + productId + '] .js-change-quantity[value="-"]').attr('disabled', true)
+        : $('.js-cart-table tr[data-id =' + productId + '] .js-change-quantity[value="-"]').attr('disabled', false)
 
       // перерисовываем ко-во товара
-      $('.cart-table tr[data-id =' + productId + '] .cart__quantity').html(data)
+      $('.js-cart-table tr[data-id =' + productId + '] .js-cart-quantity').html(data)
 
       // перерисовываем стоимость
-      cartPrice = $('.cart-table tr[data-id =' + productId + '] .cart__price').html()
-      $('.cart-table tr[data-id =' + productId + '] .cart__total').html(data * cartPrice)
+      cartPrice = $('.js-cart-table tr[data-id =' + productId + '] .js-cart-price').html()
+      $('.js-cart-table tr[data-id =' + productId + '] .js-cart-total').html(data * cartPrice)
     }
   })
 })
 
 
 // запрос на удаление товара из корзины
-btnDeleteProduct = $('.cart__delete')
+btnDeleteProduct = $('.js-cart-delete')
 
 btnDeleteProduct.click(function (e) {
   productId = $(this).closest('tr[data-id]').data('id')
   console.log('id ', productId)
+
+  productName = $(this).data('name')
+  console.log('pr name', productName)
 
   $.ajax({
     type: 'POST',
@@ -83,8 +88,11 @@ btnDeleteProduct.click(function (e) {
     success: function (data) {
       if (data) {
         console.log('data: ' + data)
-        alert('Товар ' + productId + ' удален из корзины')
-        $('.cart-table tr[data-id =' + productId + ']').remove()
+        alert('Товар ' + productName + ' удален из корзины')
+        $('.js-cart-table tr[data-id =' + productId + ']').remove()
+
+        emptyCartMassege = '<p>Ваша корзина пуста. Вернитесь в <a href="/public/catalog.php" style="text-decoration: underline">магазин</a> , чтобы ее пополнить.</p>'
+        if ( $('#cart-table').children('tr').length = 1 ) { $('.js-cart-wrapper').html(emptyCartMassege) }
       }
     }
   })

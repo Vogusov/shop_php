@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 14 2020 г., 18:27
+-- Время создания: Ноя 22 2020 г., 20:06
 -- Версия сервера: 10.3.22-MariaDB
 -- Версия PHP: 7.3.17
 
@@ -40,13 +40,8 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`id`, `product_id`, `quantity`, `session_id`, `date_time`) VALUES
-(49, 2, 2, 'buvflb6v7l47kn5r8lbt5002n6c5jk7i', '2020-11-14 14:42:57'),
-(50, 3, 2, 'buvflb6v7l47kn5r8lbt5002n6c5jk7i', '2020-11-14 14:43:16'),
-(51, 16, 2, 'buvflb6v7l47kn5r8lbt5002n6c5jk7i', '2020-11-14 14:43:18'),
-(52, 18, 2, 'buvflb6v7l47kn5r8lbt5002n6c5jk7i', '2020-11-14 14:43:19'),
-(53, 36, 2, 'buvflb6v7l47kn5r8lbt5002n6c5jk7i', '2020-11-14 14:43:21'),
-(54, 38, 2, 'buvflb6v7l47kn5r8lbt5002n6c5jk7i', '2020-11-14 14:43:25'),
-(55, 1, 3, 'buvflb6v7l47kn5r8lbt5002n6c5jk7i', '2020-11-14 15:26:12');
+(90, 2, 4, 'buvflb6v7l47kn5r8lbt5002n6c5jk7i', '2020-11-22 14:18:04'),
+(92, 1, 1, 'buvflb6v7l47kn5r8lbt5002n6c5jk7i', '2020-11-20 23:15:02');
 
 -- --------------------------------------------------------
 
@@ -97,7 +92,7 @@ CREATE TABLE `customers` (
 CREATE TABLE `goods` (
   `id` int(10) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `price` decimal(10,2) DEFAULT NULL,
+  `price` int(11) DEFAULT NULL,
   `description` varchar(500) DEFAULT NULL,
   `img_name` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -107,13 +102,13 @@ CREATE TABLE `goods` (
 --
 
 INSERT INTO `goods` (`id`, `name`, `price`, `description`, `img_name`) VALUES
-(1, 'PS4', '20000.00', 'playstation4', 'product_101.jpg'),
-(2, 'Макбук', '10000.00', 'яблоки яблоки\r\n', 'product_102.jpg'),
-(3, 'Бамбук', '100500.00', 'Бамбук обыкновенный', 'product_103.jpg'),
-(16, 'Бамбук', '666.00', 'Бамбук обыкновенный1', 'a4techmouse.jpg'),
-(18, '0', '0.00', '555', 'product_104.jpg'),
-(36, 'nnn', '777.00', 'ddd', 'product_108.jpg'),
-(38, 'фигня', '22999.00', 'Суперфигня!', 'product_107.jpg');
+(1, 'PS4', 20000, 'playstation4', 'product_101.jpg'),
+(2, 'Макбук', 10000, 'яблоки яблоки\r\n', 'product_102.jpg'),
+(3, 'Бамбук', 100500, 'Бамбук обыкновенный', 'product_103.jpg'),
+(16, 'Бамбук1', 666, 'Бамбук обыкновенный1', 'a4techmouse.jpg'),
+(18, '0', 0, '555', 'product_104.jpg'),
+(36, 'nnn', 777, 'ddd', 'product_108.jpg'),
+(38, 'фигня', 22999, 'Суперфигня!', 'product_107.jpg');
 
 -- --------------------------------------------------------
 
@@ -180,7 +175,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
 
 --
 -- AUTO_INCREMENT для таблицы `comments`
