@@ -1,9 +1,9 @@
-.goods{
+.goods {
     display: flex;
     justify-content: space-around;
 }
 
-.item{
+.item {
     border: 1px solid black;
     display: flex;
     flex-flow: column wrap;
@@ -12,15 +12,7 @@
 
 }
 
-.item__img{
+.item__img {
     width: 50px;
     height: 50px;
-}
-
-.buy_button{
-    font-size: 0.7em;
-    color: #293845;
-    background-color: #17a2fa;
-    cursor: pointer;
-    text-align: center;
 }

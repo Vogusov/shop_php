@@ -1,6 +1,6 @@
 <?php
 
-include "models/config/config.php"; /* для стилей */
+//include "models/config/config.php"; /* для стилей */
 ?>
 
 <!doctype html>
@@ -40,8 +40,14 @@ include "models/config/config.php"; /* для стилей */
 </div>
 
 
-<script src="js/script.js" ></script>
+<script src="/public/js/script.js"></script>
 
+<script>
+  // считаем сумму только для корзины
+  if (window.location.pathname === '/public/cart.php') {
+    countTotalSumInCart()
+  }
+</script>
 </body>
 
 </html>

@@ -19,7 +19,7 @@
       </div>
 
       <div class="header__block header__reg">
-        <p><a href="/public/registration.php">Войти / Зарегистрироваться</a></p>
+        <p><a href="/server/registration.php">Войти / Зарегистрироваться</a></p>
         <p>Номер сессии: <?= session_id(); ?></p>
       </div>
     </div>

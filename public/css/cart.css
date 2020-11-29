@@ -1,5 +1,5 @@
 .cart-table {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
     border-collapse: collapse;
     width: 100%;
 }
@@ -30,4 +30,20 @@
     font-size: large;
     font-weight: bold;
     cursor: pointer;
+}
+
+
+.cart__wrapper .order-button {
+    margin: 20px 0;
+}
+
+
+.cart-table__total-row {
+    column-span: 6;
+    text-align: right;
+
+}
+
+.cart-table tfoot td {
+    border: none
 }

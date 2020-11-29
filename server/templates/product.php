@@ -10,8 +10,8 @@
   <p><?= $product['name']; ?></p>
   <p><?= $product['price']; ?> Р</p>
   <p><?= $product['description']; ?></p>
-  <div class="buy_button js-add-to-cart" data-id="<?= $id; ?>" data-name="<?= $product['name'] ?>">
+  <button class="js-add-to-cart primary-button primary-button_size_l" data-id="<?= $id; ?>" data-name="<?= $product['name'] ?>">
     <span>Добавить в корзину</span>
-  </div>
+  </button>
 </div>
 <?php endif; ?>

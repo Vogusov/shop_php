@@ -1,3 +1,17 @@
+//-------- функции ----------
+
+// подсчет стоимости всех товаров в корзине
+function countTotalSumInCart() {
+  let totalSum = 0
+  $('.js-cart-total').each(function () {
+    totalSum += parseInt($(this).html(), 10)
+  })
+  $('.js-cart-total-price').html(totalSum)
+  console.log('Total sum: ', totalSum)
+}
+
+
+//------ AJAX queries -------------
 // запрос на добавление в корзину
 btn = $('.js-add-to-cart')
 
@@ -8,7 +22,7 @@ btn.click(function (e) {
 
   $.ajax({
     type: 'POST',
-    url: '/public/form.php',
+    url: '/server/form.php',
     data:
       {
         ACTION: 'add',
@@ -18,6 +32,8 @@ btn.click(function (e) {
       if (data) {
         console.log('data: ' + data)
         alert('Товар ' + productName + ' добавлен в корзину')
+
+        countTotalSumInCart()
       }
     }
   })
@@ -39,7 +55,7 @@ btnChangeQnt.click(function (e) {
 
   $.ajax({
     type: 'POST',
-    url: '/public/form.php',
+    url: '/server/form.php',
     data:
       {
         ACTION: 'change',
@@ -62,6 +78,10 @@ btnChangeQnt.click(function (e) {
       // перерисовываем стоимость
       cartPrice = $('.js-cart-table tr[data-id =' + productId + '] .js-cart-price').html()
       $('.js-cart-table tr[data-id =' + productId + '] .js-cart-total').html(data * cartPrice)
+
+      // подсчет стоимости всех  товаров в таблице:
+
+      countTotalSumInCart()
     }
   })
 })
@@ -79,7 +99,7 @@ btnDeleteProduct.click(function (e) {
 
   $.ajax({
     type: 'POST',
-    url: '/public/form.php',
+    url: '/server/form.php',
     data:
       {
         ACTION: 'delete',
@@ -91,9 +111,16 @@ btnDeleteProduct.click(function (e) {
         alert('Товар ' + productName + ' удален из корзины')
         $('.js-cart-table tr[data-id =' + productId + ']').remove()
 
-        emptyCartMassege = '<p>Ваша корзина пуста. Вернитесь в <a href="/public/catalog.php" style="text-decoration: underline">магазин</a> , чтобы ее пополнить.</p>'
-        if ( $('#cart-table').children('tr').length = 1 ) { $('.js-cart-wrapper').html(emptyCartMassege) }
+        countTotalSumInCart()
+
+        emptyCartMassege = '<p>Ваша корзина пуста. Вернитесь в <a href="/server/catalog.php" style="text-decoration: underline">магазин</a> , чтобы ее пополнить.</p>'
+
+        if ($('#cart-table tbody').children('tr').length = 0) {
+          $('.js-cart-wrapper').html(emptyCartMassege)
+        }
       }
     }
   })
 })
+
+

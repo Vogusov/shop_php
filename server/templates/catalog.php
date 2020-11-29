@@ -14,9 +14,9 @@
         </a>
         <p class="product_name js-product-name"><?= $product['name']; ?></p>
         <p class="product_price"><?= $product['price']; ?> Р</p>
-        <div class="buy_button js-add-to-cart" data-id="<?= $product['id']; ?>" data-name="<?= $product['name'] ?>">
+        <button class="js-add-to-cart primary-button" data-id="<?= $product['id']; ?>" data-name="<?= $product['name'] ?>">
           <span>Добавить в корзину</span>
-        </div>
+        </button>
       </div>
 
     <?php endforeach; ?>

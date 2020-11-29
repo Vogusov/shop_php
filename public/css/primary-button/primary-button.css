@@ -1,0 +1,9 @@
+.primary-button{
+    font-size: 0.7em;
+    color: #293845;
+    background-color: #17a2fa;
+    cursor: pointer;
+    text-align: center;
+    border: none;
+    padding: 5px 0;
+}
