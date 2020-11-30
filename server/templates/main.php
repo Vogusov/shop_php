@@ -44,7 +44,7 @@
 
 <script>
   // считаем сумму только для корзины
-  if (window.location.pathname === '/public/cart.php') {
+  if (window.location.pathname === '/server/cart.php') {
     countTotalSumInCart()
   }
 </script>

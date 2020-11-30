@@ -1,12 +1,14 @@
 <h1>Корзина</h1>
 
-<div class="js-cart-wrapper cart__wrapper">
+<div id="cart-wrapper" class="cart__wrapper">
   <?php
   $goods = getGoodsFromCart($link, $session_id);
   // Если есть товары, то рендерим их
   if ($goods):
     ?>
+
     <table id="cart-table" class="cart-table js-cart-table">
+
       <thead>
       <tr>
         <th><p>Изображение</p></th>
@@ -38,6 +40,7 @@
         </tr>
       <?php endforeach; ?>
       </tbody>
+
       <tfoot>
       <tr>
         <td colspan="4" class="cart-table__total-row">
@@ -47,18 +50,17 @@
       </tr>
       </tfoot>
 
-
     </table>
   
   
 
-    <button type="button" class="primary-button primary-button_size_l">
+    <a href="form-order.php" class="primary-button primary-button_size_l">
       <span>Оформить заказ</span>
-    </button>
+    </a>
 
 
   <?php
-// Если в корзине нет товаров, то выводим сообщение
+  // Если в корзине нет товаров, то выводим сообщение
   else:
     ?>
     <p>Ваша корзина пуста. Вернитесь в <a href="/server/catalog.php" style="text-decoration: underline">магазин</a> , чтобы ее пополнить.</p>

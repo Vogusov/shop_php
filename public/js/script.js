@@ -115,12 +115,10 @@ btnDeleteProduct.click(function (e) {
 
         emptyCartMassege = '<p>Ваша корзина пуста. Вернитесь в <a href="/server/catalog.php" style="text-decoration: underline">магазин</a> , чтобы ее пополнить.</p>'
 
-        if ($('#cart-table tbody').children('tr').length = 0) {
-          $('.js-cart-wrapper').html(emptyCartMassege)
+        if ($('#cart-table tbody').children('tr').length == 0) {
+          $('#cart-wrapper').html(emptyCartMassege)
         }
       }
     }
   })
 })
-
-

@@ -54,7 +54,7 @@ if (isset($_POST['ACTION'])) {
       if (isset($_POST['QNT']))
         $quantity = (int)$_POST['QNT'];
 
-      // В зависимости от знака, производим операции
+      /* В зависимости от знака, производим операции */
       switch ($sign) {
         case '+':
           if (addToCart($link, $product_id, $session_id)) {
@@ -90,4 +90,16 @@ if (isset($_POST['ACTION'])) {
       }
       break;
   }
+}
+
+
+
+/* ОФОРМЛЕНИЕ ЗАКАЗА */
+
+if (isset($_POST['FORM-ORDER'])) {
+  $name = strip_tags(trim($_POST['name']));
+  $phone = strip_tags(trim($_POST['phone']));
+  $addInfo = strip_tags(trim($_POST['add-info']));
+
+
 }

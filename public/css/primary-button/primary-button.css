@@ -1,9 +1,10 @@
 .primary-button{
-    font-size: 0.7em;
-    color: #293845;
-    background-color: #17a2fa;
-    cursor: pointer;
-    text-align: center;
-    border: none;
+    display: block;
     padding: 5px 0;
+    border: none;
+    background-color: #17a2fa;
+    color: rgba(0, 0, 0, 0.8);
+    text-align: center;
+    font-size: 0.7em;
+    cursor: pointer;
 }
