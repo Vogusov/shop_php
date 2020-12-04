@@ -273,7 +273,6 @@ function formOrder($link, $session_id, $userDataArray) {
       if (!$result_customers) die (mysqli_error($link));
       $customer_id = customerExists($link, $session_id);
     }
-    echo "!!$customer_id!!";
 
     //  2. Записываем данные в таблицу orders
     $query_order = "insert into `orders` (`user_id`, `add_info`, `date_time`) values ('$customer_id', '$addInfo', null);";
@@ -281,28 +280,18 @@ function formOrder($link, $session_id, $userDataArray) {
     // сохраняем новы ИД
     $order_id = (int)mysqli_insert_id($link);
     if (!$result_order) die (mysqli_error($link));
-    echo 'new id: '.$order_id;
 
    // 3. Записывам в `orders_products` список товаров для каждого заказа с колличесвом из Корзины.
     //  3.1 Берем массив товаров с нужной сессией из корзины
-    $query_orders_products = "";
-
-    //  3.3 Записываем данные в таблицу
-//    print_r($cart);
     $cart = getGoodsFromCart($link, $session_id);
+    //  3.3 Записываем данные в таблицу
     foreach ($cart as $product) {
       $product_id = (int)$product['product_id'];
       $quantity = (int)$product['quantity'];
-      $query_orders_products .= "insert into `orders_products` (`order_id`, `product_id`, `quantity`, `date_time`) values ('$order_id', '$product_id', '$quantity', null);";
-      echo "<br>";
-      print_r($product_id);
-      echo "<br>";
-      print_r($quantity);
-      echo "<br>";
+      $query_orders_products = "insert into `orders_products` (`order_id`, `product_id`, `quantity`, `date_time`) values ('$order_id', '$product_id', '$quantity', null);";
+      $result_orders_products = mysqli_query($link, $query_orders_products);
+      if (!$result_orders_products) die (mysqli_error($link));
     }
-    echo $query_orders_products;
-    $result_orders_products = mysqli_query($link, $query_orders_products);
-    if (!$result_orders_products) die (mysqli_error($link));
 
     mysqli_commit($link);
 
