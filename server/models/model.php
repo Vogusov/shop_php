@@ -91,7 +91,7 @@ function deleteGoodsFromDB($link, int $id) {
   if (!$id)
     return false;
 
-  $query = sprintf("DELETE FROM `goods` where id='$id'");
+  $query = sprintf("DELETE FROM `goods` where id='$id';");
   $result = mysqli_query($link, $query);
 
   if (!$result) die (mysqli_error($link));
@@ -103,7 +103,7 @@ function deleteGoodsFromDB($link, int $id) {
 
 function editProductInDB($link, $id, $name, $price, $description, $img_name) {
   $id = (int)$id;
-  $str = "update `goods` set name='%s', price='%d', description='%s', img_name='%s' where id='$id'";
+  $str = "update `goods` set name='%s', price='%d', description='%s', img_name='%s' where id='$id';";
   $query = sprintf($str, mysqli_escape_string($link, $name), mysqli_escape_string($link, $price), mysqli_escape_string($link, $description), mysqli_escape_string($link, $img_name));
   $result = mysqli_query($link, $query);
 
@@ -115,7 +115,7 @@ function editProductInDB($link, $id, $name, $price, $description, $img_name) {
 /*Создания нового товара*/
 
 function addNewProductToDB($link, $name, $price, $description, $img_name) {
-  $str = "insert into `goods` (`name`, `price`, `description`, `img_name`) values ('%s', '%d', '%s', '%s')";
+  $str = "insert into `goods` (`name`, `price`, `description`, `img_name`) values ('%s', '%d', '%s', '%s');";
   $query = sprintf($str, mysqli_escape_string($link, $name), mysqli_escape_string($link, $price), mysqli_escape_string($link, $description), mysqli_escape_string($link, $img_name));
   $result = mysqli_query($link, $query);
 
@@ -127,7 +127,7 @@ function addNewProductToDB($link, $name, $price, $description, $img_name) {
 /*-- Регистрация, авторизация --*/
 // todo: сделать проверку на единство пары Логин-Пароль при регистрации и в БД;
 function authorize($link, $login, $pass) {
-  $query = "select `id`, `role` from `users` where `login` = '$login' and `password` = '$pass'";
+  $query = "select `id`, `role` from `users` where `login` = '$login' and `password` = '$pass';";
   $result = mysqli_query($link, $query) or die('Error in auth request: ' . mysqli_error($link));
   if (!$result) die (mysqli_error($link));
 
@@ -160,14 +160,14 @@ function addToCart($link, $product_id, $session_id) {
 
   // Если нет, то добавляем строку с ним
   if ($count == 0) {
-    $query = "insert into `cart` (`product_id`, `session_id`, `date_time`) value ('$product_id', '$session_id', null)";
+    $query = "insert into `cart` (`product_id`, `session_id`, `date_time`) value ('$product_id', '$session_id', null);";
     $result = mysqli_query($link, $query);
     if (!$result) die (mysqli_error($link));
 
     // Если есть, то увеличиваем его колличество
   } elseif ($count = 1) {
 
-    $query = "update `cart` set `quantity` = `quantity` + 1 , `date_time`= null where `product_id` = '$product_id' AND `session_id` = '$session_id'";
+    $query = "update `cart` set `quantity` = `quantity` + 1 , `date_time`= null where `product_id` = '$product_id' AND `session_id` = '$session_id';";
     $result = mysqli_query($link, $query);
     if (!$result) die (mysqli_error($link));
 
@@ -181,7 +181,7 @@ function addToCart($link, $product_id, $session_id) {
 
 /* Определение наличия товара в корзине */
 function searchProductInCart($link, $product_id, $session_id) {
-  $query = "select count(`product_id`) from `cart` where `product_id` = '$product_id' AND `session_id` = '$session_id'";
+  $query = "select count(`product_id`) from `cart` where `product_id` = '$product_id' AND `session_id` = '$session_id';";
   $result = mysqli_query($link, $query);
 
   if (!$result) die(mysqli_error($link));
@@ -228,7 +228,7 @@ function getGoodsFromCart($link, $session_id) {
 
 /* Уменьшить кол-во товара в корзине */
 function reduceInCart($link, $product_id, $session_id) {
-  $query = "update `cart` set `quantity` = `quantity` - 1 , `date_time`= null where `product_id` = '$product_id' AND `session_id` = '$session_id'";
+  $query = "update `cart` set `quantity` = `quantity` - 1 , `date_time`= null where `product_id` = '$product_id' AND `session_id` = '$session_id';";
   $result = mysqli_query($link, $query);
 
   if (!$result) die (mysqli_error($link));
@@ -239,11 +239,89 @@ function reduceInCart($link, $product_id, $session_id) {
 
 /* Удаление товара из корзины */
 
-function deleteFromCart($link, $product_id, $session_id){
-  $query = "delete from `cart` where `product_id` = '$product_id' AND `session_id` = '$session_id'";
+function deleteFromCart($link, $product_id, $session_id) {
+  $query = "delete from `cart` where `product_id` = '$product_id' AND `session_id` = '$session_id';";
   $result = mysqli_query($link, $query);
 
   if (!$result) die (mysqli_error($link));
 
   return mysqli_affected_rows($link);
+}
+
+
+/* Формирование заказа!!! */
+
+function formOrder($link, $session_id, $userDataArray) {
+  $name = $userDataArray['name'];
+  $phone = $userDataArray['phone'];
+  $addInfo = $userDataArray['addInfo'];
+//  $product_id = $cartArray['product_id'];
+//  $quantity = $cartArray['quantity'];
+
+  mysqli_begin_transaction($link);
+
+
+  try {
+    // проверяем наличие пользователя по сессии.
+    if(customerExists($link, $session_id)){
+      $customer_id = customerExists($link, $session_id);
+    } else {
+      // 1. Если нет такой сессии, значит пользователь новый.
+      //    Создаем пользователя по ИД сессии в `customers` с именем и телефоном и присваиваем ИД пользователя.
+      $query_customer = "insert into `customers` (`session_id`, `name`, `phone`, `date_created`) values ('$session_id', '$name', '$phone', null);";
+      $result_customers = mysqli_query($link, $query_customer);
+      if (!$result_customers) die (mysqli_error($link));
+      $customer_id = customerExists($link, $session_id);
+    }
+    echo "!!$customer_id!!";
+
+    //  2. Записываем данные в таблицу orders
+    $query_order = "insert into `orders` (`user_id`, `add_info`, `date_time`) values ('$customer_id', '$addInfo', null);";
+    $result_order = mysqli_query($link, $query_order);
+    // сохраняем новы ИД
+    $order_id = (int)mysqli_insert_id($link);
+    if (!$result_order) die (mysqli_error($link));
+    echo 'new id: '.$order_id;
+
+   // 3. Записывам в `orders_products` список товаров для каждого заказа с колличесвом из Корзины.
+    //  3.1 Берем массив товаров с нужной сессией из корзины
+    $query_orders_products = "";
+
+    //  3.3 Записываем данные в таблицу
+//    print_r($cart);
+    $cart = getGoodsFromCart($link, $session_id);
+    foreach ($cart as $product) {
+      $product_id = (int)$product['product_id'];
+      $quantity = (int)$product['quantity'];
+      $query_orders_products .= "insert into `orders_products` (`order_id`, `product_id`, `quantity`, `date_time`) values ('$order_id', '$product_id', '$quantity', null);";
+      echo "<br>";
+      print_r($product_id);
+      echo "<br>";
+      print_r($quantity);
+      echo "<br>";
+    }
+    echo $query_orders_products;
+    $result_orders_products = mysqli_query($link, $query_orders_products);
+    if (!$result_orders_products) die (mysqli_error($link));
+
+    mysqli_commit($link);
+
+    // todo: 1-чистим корзину, 2-перенаправляем в личный кабинет (страница заказов для незарегистрированного пользователя)
+  } catch (mysqli_sql_exception $exception) {
+
+    mysqli_rollback($link);
+    throw $exception;
+  }
+}
+
+// найти cutomer
+function customerExists($link, $session_id){
+  $query = "select `id` from `customers` where `session_id` = '$session_id';";
+  $result = mysqli_query($link, $query);
+  if($result){
+    $customer = mysqli_fetch_assoc($result);
+    return $customer['id'];
+  } else {
+    return null;
+  }
 }

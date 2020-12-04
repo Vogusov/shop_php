@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 22 2020 г., 20:06
+-- Время создания: Дек 03 2020 г., 16:06
 -- Версия сервера: 10.3.22-MariaDB
 -- Версия PHP: 7.3.17
 
@@ -40,8 +40,14 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`id`, `product_id`, `quantity`, `session_id`, `date_time`) VALUES
-(90, 2, 4, 'buvflb6v7l47kn5r8lbt5002n6c5jk7i', '2020-11-22 14:18:04'),
-(92, 1, 1, 'buvflb6v7l47kn5r8lbt5002n6c5jk7i', '2020-11-20 23:15:02');
+(129, 16, 7, 'buvflb6v7l47kn5r8lbt5002n6c5jk7i', '2020-11-26 14:02:14'),
+(134, 36, 1, 'buvflb6v7l47kn5r8lbt5002n6c5jk7i', '2020-11-26 14:02:06'),
+(135, 1, 1, 'rc7cq3maqtqpud9v2d3bks3sqsvf98e4', '2020-11-26 15:20:51'),
+(136, 2, 3, '81gavfqglbo69qrfqa98r38k8pgtrvb3', '2020-11-26 15:22:42'),
+(137, 16, 1, '81gavfqglbo69qrfqa98r38k8pgtrvb3', '2020-11-26 15:22:36'),
+(148, 2, 3, 'pnaaa366rahnj7300h9ap4b6qgnvj22j', '2020-12-02 15:48:44'),
+(149, 3, 1, 'pnaaa366rahnj7300h9ap4b6qgnvj22j', '2020-11-30 12:37:18'),
+(150, 16, 4, 'pnaaa366rahnj7300h9ap4b6qgnvj22j', '2020-12-02 15:48:48');
 
 -- --------------------------------------------------------
 
@@ -90,12 +96,12 @@ CREATE TABLE `customers` (
 --
 
 CREATE TABLE `goods` (
-  `id` int(10) NOT NULL,
-  `name` varchar(50) NOT NULL,
+  `id` int(11) NOT NULL,
+  `name` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
   `price` int(11) DEFAULT NULL,
-  `description` varchar(500) DEFAULT NULL,
-  `img_name` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `description` varchar(500) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `img_name` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Дамп данных таблицы `goods`
@@ -109,6 +115,30 @@ INSERT INTO `goods` (`id`, `name`, `price`, `description`, `img_name`) VALUES
 (18, '0', 0, '555', 'product_104.jpg'),
 (36, 'nnn', 777, 'ddd', 'product_108.jpg'),
 (38, 'фигня', 22999, 'Суперфигня!', 'product_107.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `orders`
+--
+
+CREATE TABLE `orders` (
+  `id` int(11) NOT NULL,
+  `user_id` int(50) NOT NULL,
+  `date_time` timestamp NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `orders_products`
+--
+
+CREATE TABLE `orders_products` (
+  `order_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` varchar(45) CHARACTER SET utf8mb4 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -162,6 +192,19 @@ ALTER TABLE `goods`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Индексы таблицы `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `orders_products`
+--
+ALTER TABLE `orders_products`
+  ADD PRIMARY KEY (`order_id`,`product_id`),
+  ADD KEY `fk-order-products_products` (`product_id`);
+
+--
 -- Индексы таблицы `users`
 --
 ALTER TABLE `users`
@@ -175,7 +218,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=151;
 
 --
 -- AUTO_INCREMENT для таблицы `comments`
@@ -193,7 +236,13 @@ ALTER TABLE `customers`
 -- AUTO_INCREMENT для таблицы `goods`
 --
 ALTER TABLE `goods`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+
+--
+-- AUTO_INCREMENT для таблицы `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
@@ -210,6 +259,13 @@ ALTER TABLE `users`
 --
 ALTER TABLE `cart`
   ADD CONSTRAINT `fk_cart_goods` FOREIGN KEY (`product_id`) REFERENCES `goods` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Ограничения внешнего ключа таблицы `orders_products`
+--
+ALTER TABLE `orders_products`
+  ADD CONSTRAINT `fk-order-products_products` FOREIGN KEY (`product_id`) REFERENCES `goods` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_order-products_orders` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

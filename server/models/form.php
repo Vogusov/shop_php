@@ -96,10 +96,20 @@ if (isset($_POST['ACTION'])) {
 
 /* ОФОРМЛЕНИЕ ЗАКАЗА */
 
-if (isset($_POST['FORM-ORDER'])) {
+if (isset($_POST['form-order'])) {
   $name = strip_tags(trim($_POST['name']));
   $phone = strip_tags(trim($_POST['phone']));
-  $addInfo = strip_tags(trim($_POST['add-info']));
+  isset($_POST['add-info']) ? $addInfo = strip_tags(trim($_POST['add-info'])) : $addInfo = null;
+  $cart = getGoodsFromCart($link, $session_id);
 
+  $userData = [
+    'name' => $name,
+    'phone' => $phone,
+    'addInfo' => $addInfo
+  ];
+  echo 1;
+  if(formOrder($link, $session_id, $userData)){
+    echo 'Заказ оформлен';
+  };
 
 }
