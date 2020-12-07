@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Дек 03 2020 г., 16:06
+-- Время создания: Дек 07 2020 г., 20:24
 -- Версия сервера: 10.3.22-MariaDB
 -- Версия PHP: 7.3.17
 
@@ -40,14 +40,12 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`id`, `product_id`, `quantity`, `session_id`, `date_time`) VALUES
-(129, 16, 7, 'buvflb6v7l47kn5r8lbt5002n6c5jk7i', '2020-11-26 14:02:14'),
-(134, 36, 1, 'buvflb6v7l47kn5r8lbt5002n6c5jk7i', '2020-11-26 14:02:06'),
 (135, 1, 1, 'rc7cq3maqtqpud9v2d3bks3sqsvf98e4', '2020-11-26 15:20:51'),
 (136, 2, 3, '81gavfqglbo69qrfqa98r38k8pgtrvb3', '2020-11-26 15:22:42'),
 (137, 16, 1, '81gavfqglbo69qrfqa98r38k8pgtrvb3', '2020-11-26 15:22:36'),
-(148, 2, 3, 'pnaaa366rahnj7300h9ap4b6qgnvj22j', '2020-12-02 15:48:44'),
-(149, 3, 1, 'pnaaa366rahnj7300h9ap4b6qgnvj22j', '2020-11-30 12:37:18'),
-(150, 16, 4, 'pnaaa366rahnj7300h9ap4b6qgnvj22j', '2020-12-02 15:48:48');
+(186, 1, 2, 'ore2scgn04tp2u095ogupq7632pkffbl', '2020-12-07 15:12:23'),
+(187, 2, 2, 'ore2scgn04tp2u095ogupq7632pkffbl', '2020-12-07 15:12:44'),
+(194, 38, 1, 'ldeooh3stck5hgat3g7r17g1p20r331a', '2020-12-07 15:46:32');
 
 -- --------------------------------------------------------
 
@@ -86,8 +84,18 @@ CREATE TABLE `customers` (
   `id` int(11) NOT NULL,
   `session_id` varchar(45) NOT NULL,
   `name` varchar(45) NOT NULL,
-  `phone` varchar(45) NOT NULL
+  `phone` varchar(45) NOT NULL,
+  `date_created` timestamp NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Дамп данных таблицы `customers`
+--
+
+INSERT INTO `customers` (`id`, `session_id`, `name`, `phone`, `date_created`) VALUES
+(2, 'pnaaa366rahnj7300h9ap4b6qgnvj22j', 'test', 'test', '2020-12-03 22:35:16'),
+(3, 'pnaaa366rahnj7300h9ap4b6qgnvj22j', 'test', 'test', '2020-12-03 22:35:42'),
+(18, 'ldeooh3stck5hgat3g7r17g1p20r331a', 'King', '*777*', '2020-12-07 15:17:28');
 
 -- --------------------------------------------------------
 
@@ -124,9 +132,20 @@ INSERT INTO `goods` (`id`, `name`, `price`, `description`, `img_name`) VALUES
 
 CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
-  `user_id` int(50) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `add_info` varchar(5000) DEFAULT NULL,
   `date_time` timestamp NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Дамп данных таблицы `orders`
+--
+
+INSERT INTO `orders` (`id`, `user_id`, `add_info`, `date_time`) VALUES
+(104, 17, '', '2020-12-07 15:00:04'),
+(105, 17, 'qwe', '2020-12-07 15:00:31'),
+(106, 18, 'im the king', '2020-12-07 15:17:28'),
+(107, 18, 'АауАа', '2020-12-07 15:45:32');
 
 -- --------------------------------------------------------
 
@@ -137,8 +156,20 @@ CREATE TABLE `orders` (
 CREATE TABLE `orders_products` (
   `order_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
-  `quantity` varchar(45) CHARACTER SET utf8mb4 NOT NULL
+  `quantity` int(11) NOT NULL,
+  `date_time` timestamp NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `orders_products`
+--
+
+INSERT INTO `orders_products` (`order_id`, `product_id`, `quantity`, `date_time`) VALUES
+(104, 1, 1, '2020-12-07 15:00:04'),
+(105, 3, 1, '2020-12-07 15:00:31'),
+(106, 1, 2, '2020-12-07 15:17:28'),
+(106, 38, 3, '2020-12-07 15:17:28'),
+(107, 3, 3, '2020-12-07 15:45:32');
 
 -- --------------------------------------------------------
 
@@ -171,7 +202,8 @@ INSERT INTO `users` (`id`, `login`, `password`, `role`, `reg_date`) VALUES
 --
 ALTER TABLE `cart`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_cart_goods` (`product_id`);
+  ADD KEY `fk_cart_goods` (`product_id`),
+  ADD KEY `session_id_indx` (`session_id`);
 
 --
 -- Индексы таблицы `comments`
@@ -183,7 +215,8 @@ ALTER TABLE `comments`
 -- Индексы таблицы `customers`
 --
 ALTER TABLE `customers`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_customers_cart_idx` (`session_id`);
 
 --
 -- Индексы таблицы `goods`
@@ -218,7 +251,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=151;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=195;
 
 --
 -- AUTO_INCREMENT для таблицы `comments`
@@ -230,7 +263,7 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT для таблицы `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT для таблицы `goods`
@@ -242,7 +275,7 @@ ALTER TABLE `goods`
 -- AUTO_INCREMENT для таблицы `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
 
 --
 -- AUTO_INCREMENT для таблицы `users`

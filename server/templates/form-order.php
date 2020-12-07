@@ -36,11 +36,11 @@
     <legend>Введите свою контактную информацию, чтобы мы могли с Вами связаться</legend>
     <p>
       <label for="name">Ваше имя:</label>
-      <input type="text" id="name" name="name" required>
+      <input type="text" id="name" name="name" value="<?= $_SESSION['customer_name'] ?? "" ?>" <?= $_SESSION['customer_name'] ?  "disabled" : "" ?>  required>
     </p>
     <p>
       <label for="phone">Ваш номер телефона:</label>
-      <input type="tel" id="phone" name="phone" required>
+      <input type="tel" id="phone" name="phone" value="<?= $_SESSION['customer_phone'] ?? "" ?>" <?= $_SESSION['customer_phone'] ?  "disabled" : "" ?> required>
     </p>
     <p>
       <label for="add-info">Напишите дополнительную информацию и ваши пожелания, если считаете нужным:</label>
@@ -49,3 +49,7 @@
   </fieldset>
   <button type="submit" name="form-order" class="primary-button primary-button_size_l">Оформить заказ</button>
 </form>
+
+<!--<script>-->
+<!--  $('#name').val-->
+<!--</script>-->

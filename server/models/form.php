@@ -99,10 +99,12 @@ if (isset($_POST['ACTION'])) {
 if (isset($_POST['form-order'])) {
   $name = strip_tags(trim($_POST['name']));
   $phone = strip_tags(trim($_POST['phone']));
+  $_SESSION['customer_name'] = $name;
+  $_SESSION['customer_phone'] = $phone;
   isset($_POST['add-info']) ? $addInfo = strip_tags(trim($_POST['add-info'])) : $addInfo = null;
-  echo $name;
-  echo $phone;
-  echo $addInfo;
+//  echo $name;
+//  echo $phone;
+//  echo $addInfo;
   $cart = getGoodsFromCart($link, $session_id);
 
   $userData = [
@@ -112,13 +114,18 @@ if (isset($_POST['form-order'])) {
   ];
 
   $order_id = formOrder($link, $session_id, $userData);
-// formOrder($link, $session_id, $userData);
   if($order_id){
-
-
-    echo "Заказ оформлен. Номер Вашего заказа: $order_id!</br>На <a href='index.php'>сайт</a>";
+    if(!isset($_SESSION['order_id'])){
+    }
+    $_SESSION['order_id'] = [];
+    $_SESSION['order_id'] = getOrdersId($link, $session_id);
+//    print_r($_SESSION);
+//    echo is_array($_SESSION['order_id']) ? "arrrr" : "not arr";
+    echo "Заказ оформлен. Номер Вашего заказа: $order_id!</br><a href='orders.php'>К заказам</a>";
+//    header('Location: /');
   } else {
     echo "Заказ не оформлен. произошла ошибка.</br>На <a href='index.php'>сайт</a>";
   }
+
 
 }
