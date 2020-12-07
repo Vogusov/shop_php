@@ -255,16 +255,14 @@ function formOrder($link, $session_id, $userDataArray) {
   $name = $userDataArray['name'];
   $phone = $userDataArray['phone'];
   $addInfo = $userDataArray['addInfo'];
-//  $product_id = $cartArray['product_id'];
-//  $quantity = $cartArray['quantity'];
 
   mysqli_begin_transaction($link);
-
 
   try {
     // проверяем наличие пользователя по сессии.
     if(customerExists($link, $session_id)){
       $customer_id = customerExists($link, $session_id);
+      echo $customer_id;
     } else {
       // 1. Если нет такой сессии, значит пользователь новый.
       //    Создаем пользователя по ИД сессии в `customers` с именем и телефоном и присваиваем ИД пользователя.
@@ -279,11 +277,13 @@ function formOrder($link, $session_id, $userDataArray) {
     $result_order = mysqli_query($link, $query_order);
     // сохраняем новы ИД
     $order_id = (int)mysqli_insert_id($link);
+    echo "%Order ID: $order_id^%";
     if (!$result_order) die (mysqli_error($link));
 
    // 3. Записывам в `orders_products` список товаров для каждого заказа с колличесвом из Корзины.
     //  3.1 Берем массив товаров с нужной сессией из корзины
     $cart = getGoodsFromCart($link, $session_id);
+    print_r($cart);
     //  3.3 Записываем данные в таблицу
     foreach ($cart as $product) {
       $product_id = (int)$product['product_id'];
@@ -292,8 +292,11 @@ function formOrder($link, $session_id, $userDataArray) {
       $result_orders_products = mysqli_query($link, $query_orders_products);
       if (!$result_orders_products) die (mysqli_error($link));
     }
+    //4. Очищаем корзину
+       deleteAllFromCart($link, $session_id);
 
     mysqli_commit($link);
+    return $order_id;
 
     // todo: 1-чистим корзину, 2-перенаправляем в личный кабинет (страница заказов для незарегистрированного пользователя)
   } catch (mysqli_sql_exception $exception) {
@@ -303,7 +306,9 @@ function formOrder($link, $session_id, $userDataArray) {
   }
 }
 
-// найти cutomer
+
+
+/* Найти customer по сессии */
 function customerExists($link, $session_id){
   $query = "select `id` from `customers` where `session_id` = '$session_id';";
   $result = mysqli_query($link, $query);
@@ -313,4 +318,13 @@ function customerExists($link, $session_id){
   } else {
     return null;
   }
+}
+
+/* Удалить все товары из корзины по сессии */
+
+function deleteAllFromCart($link, $session_id){
+  $query = "DELETE FROM `cart` WHERE `session_id` = '$session_id';";
+  $result = mysqli_query($link, $query);
+  if (!$result) die (mysqli_error($link));
+  return mysqli_affected_rows($link);
 }

@@ -100,6 +100,9 @@ if (isset($_POST['form-order'])) {
   $name = strip_tags(trim($_POST['name']));
   $phone = strip_tags(trim($_POST['phone']));
   isset($_POST['add-info']) ? $addInfo = strip_tags(trim($_POST['add-info'])) : $addInfo = null;
+  echo $name;
+  echo $phone;
+  echo $addInfo;
   $cart = getGoodsFromCart($link, $session_id);
 
   $userData = [
@@ -107,9 +110,15 @@ if (isset($_POST['form-order'])) {
     'phone' => $phone,
     'addInfo' => $addInfo
   ];
-  echo 1;
-  if(formOrder($link, $session_id, $userData)){
-    echo 'Заказ оформлен';
-  };
+
+  $order_id = formOrder($link, $session_id, $userData);
+// formOrder($link, $session_id, $userData);
+  if($order_id){
+
+
+    echo "Заказ оформлен. Номер Вашего заказа: $order_id!</br>На <a href='index.php'>сайт</a>";
+  } else {
+    echo "Заказ не оформлен. произошла ошибка.</br>На <a href='index.php'>сайт</a>";
+  }
 
 }
