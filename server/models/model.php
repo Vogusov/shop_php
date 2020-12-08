@@ -283,7 +283,7 @@ function formOrder($link, $session_id, $userDataArray) {
     // 3. Записывам в `orders_products` список товаров для каждого заказа с колличесвом из Корзины.
     //  3.1 Берем массив товаров с нужной сессией из корзины
     $cart = getGoodsFromCart($link, $session_id);
-    print_r($cart);
+//    print_r($cart);
     //  3.3 Записываем данные в таблицу
     foreach ($cart as $product) {
       $product_id = (int)$product['product_id'];
@@ -365,9 +365,16 @@ function  getOrdersId($link, $session_id){
   return $rows;
 }
 
-/*
- * select orders.id as order_id from orders
-inner join customers on user_id = customers.id
-where session_id = 'ldeooh3stck5hgat3g7r17g1p20r331a'
-;
- */
+/* Считаем сумму заказа */
+function countOrderSum($link, $order_id){
+  $query = "select sum(`quantity` * `price`) as `order_sum` from `orders_products`
+inner join `goods` on `product_id` = `goods`.`id`
+where `orders_products`.`order_id` = '$order_id'
+;";
+
+  $result = mysqli_query($link, $query);
+  if (!$result) die (mysqli_error($link));
+
+  $sum = mysqli_fetch_assoc($result);
+  return $sum;
+}

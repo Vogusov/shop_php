@@ -100,7 +100,7 @@ if (isset($_POST['form-order'])) {
   $name = strip_tags(trim($_POST['name']));
   $phone = strip_tags(trim($_POST['phone']));
   $name ? $_SESSION['customer_name'] = $name : $_SESSION['customer_name'];
-  $name ? $_SESSION['customer_phone'] = $name : $_SESSION['customer_phone'];
+  $phone ? $_SESSION['customer_phone'] = $phone : $_SESSION['customer_phone'];
   isset($_POST['add-info']) ? $addInfo = strip_tags(trim($_POST['add-info'])) : $addInfo = null;
 //  echo $name;
 //  echo $phone;
@@ -118,18 +118,19 @@ if (isset($_POST['form-order'])) {
 //    if(!isset($_SESSION['order_id'])){
 //    }
     $arr = getOrdersId($link, $session_id);
-    echo "ARRRRRRR: ";
-    print_r($arr);
+//    echo "ARRRRRRR: ";
+//    print_r($arr);
     $_SESSION['order_id'] = [];
     $_SESSION['order_id'] = array_column($arr, 'order_id');
-    echo "SESSID: ";
-    print_r($_SESSION['order_id']);
+//    echo "SESSID: ";
+//    print_r($_SESSION['order_id']);
 //    print_r($_SESSION);
 //    echo is_array($_SESSION['order_id']) ? "arrrr" : "not arr";
-    echo "Заказ оформлен. Номер Вашего заказа: $order_id!</br><a href='orders.php'>К заказам</a>";
-//    header('Location: /');
+//    echo "Заказ оформлен. Номер Вашего заказа: $order_id!</br><a href='orders.php'>К заказам</a>";
+    header('Location: orders.php');
   } else {
-    echo "Заказ не оформлен. произошла ошибка.</br>На <a href='index.php'>сайт</a>";
+    header('Location: error.php');
+//    echo "Заказ не оформлен. произошла ошибка.</br>На <a href='index.php'>сайт</a>";
   }
 
 

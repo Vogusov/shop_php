@@ -52,6 +52,3 @@
   <button type="submit" name="form-order" class="primary-button primary-button_size_l">Оформить заказ</button>
 </form>
 
-<!--<script>-->
-<!--  $('#name').val-->
-<!--</script>-->
