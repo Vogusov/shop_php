@@ -99,8 +99,8 @@ if (isset($_POST['ACTION'])) {
 if (isset($_POST['form-order'])) {
   $name = strip_tags(trim($_POST['name']));
   $phone = strip_tags(trim($_POST['phone']));
-  $_SESSION['customer_name'] = $name;
-  $_SESSION['customer_phone'] = $phone;
+  $name ? $_SESSION['customer_name'] = $name : $_SESSION['customer_name'];
+  $name ? $_SESSION['customer_phone'] = $name : $_SESSION['customer_phone'];
   isset($_POST['add-info']) ? $addInfo = strip_tags(trim($_POST['add-info'])) : $addInfo = null;
 //  echo $name;
 //  echo $phone;
@@ -115,10 +115,15 @@ if (isset($_POST['form-order'])) {
 
   $order_id = formOrder($link, $session_id, $userData);
   if($order_id){
-    if(!isset($_SESSION['order_id'])){
-    }
+//    if(!isset($_SESSION['order_id'])){
+//    }
+    $arr = getOrdersId($link, $session_id);
+    echo "ARRRRRRR: ";
+    print_r($arr);
     $_SESSION['order_id'] = [];
-    $_SESSION['order_id'] = getOrdersId($link, $session_id);
+    $_SESSION['order_id'] = array_column($arr, 'order_id');
+    echo "SESSID: ";
+    print_r($_SESSION['order_id']);
 //    print_r($_SESSION);
 //    echo is_array($_SESSION['order_id']) ? "arrrr" : "not arr";
     echo "Заказ оформлен. Номер Вашего заказа: $order_id!</br><a href='orders.php'>К заказам</a>";

@@ -13,10 +13,10 @@ for($i = 0, $length = count($orders); $i < $length; $i++):
 print_r($orders[$i]);
 ?>
 
-<h3>Заказ № <?= $orders[$i]['order_id']; ?></h3>
+<h3>Заказ № <?= $orders[$i]; ?></h3>
 
 <?php
-$goods = getGoodsFromOrders($link, $orders[$i]['order_id']);
+$goods = getGoodsFromOrders($link, $orders[$i]);
 foreach ($goods as $product):
   ?>
   <table>

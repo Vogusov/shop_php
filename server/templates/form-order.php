@@ -1,6 +1,8 @@
 <h1><?= $title ?></h1>
 
 <p>Номер сессии: <?= session_id(); ?></p>
+<p>Имя: <?= $_SESSION['customer_name']; ?></p>
+<p>Телефон: <?= $_SESSION['customer_phone']; ?></p>
 
 <div>
   <h2>Ваши товары: </h2>

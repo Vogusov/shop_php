@@ -22,6 +22,8 @@
         <p><a href="/server/registration.php">Войти / Зарегистрироваться</a></p>
         <p><a href="/server/orders.php">Мои заказы</a></p>
         <p>Номер сессии: <?= session_id(); ?></p>
+        <p>Имя: <?= $_SESSION['customer_name']; ?></p>
+        <p>Телефон: <?= $_SESSION['customer_phone']; ?></p>
       </div>
     </div>
 
