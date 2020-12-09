@@ -19,11 +19,25 @@
       </div>
 
       <div class="header__block header__reg">
-        <p><a href="/server/registration.php">Войти / Зарегистрироваться</a></p>
-        <p><a href="/server/orders.php">Мои заказы</a></p>
+        <?php if (!isset($_COOKIE['login'])): ?>
+          <p><a href="/server/authorization.php">Войти / Зарегистрироваться</a></p>
+        <?php endif; ?>
+
+        <?php if (isset($_COOKIE['login'])): ?>
+          <p><a href="/server/account.php">Личный кабинет</a></p>
+        <?php endif; ?>
+
+        <?php
+        if (!empty($_SESSION['order_id'])):
+          ?>
+          <p><a href="/server/orders.php">Мои заказы</a></p>
+        <?php endif; ?>
         <p>Номер сессии: <?= session_id(); ?></p>
-        <p>Имя: <?= $_SESSION['customer_name']; ?></p>
-        <p>Телефон: <?= $_SESSION['customer_phone']; ?></p>
+        <!--        <p>Имя: --><? //= $_SESSION['customer_name']; ?><!--</p>-->
+        <!--        <p>Телефон: --><? //= $_SESSION['customer_phone']; ?><!--</p>-->
+        <?php foreach ($_SESSION as $key => $value): ?>
+          <p><?= "$key: $value"; ?></p>
+        <?php endforeach; ?>
       </div>
     </div>
 
@@ -35,9 +49,9 @@
         <li><a href="contacts.php">Контакты</a></li>
         <li><a href="cart.php">Корзина</a></li>
         <?php
-        if (isset($_COOKIE['role']) && (int)$_COOKIE['role'] === 0):
-        ?>
-        <li><a href="admin.php">Админка</a></li>
+        if (isset($_COOKIE['role']) && (int)$_COOKIE['role'] === 1):
+          ?>
+          <li><a href="admin.php">Админка</a></li>
         <?php endif; ?>
       </ul>
     </nav>

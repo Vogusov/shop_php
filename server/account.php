@@ -1,6 +1,4 @@
 <?php
-session_start();
-
 include 'models/model.php';
-include 'models/admin.php';
+include 'models/account.php';
 include 'templates/main.php';

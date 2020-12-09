@@ -4,28 +4,72 @@ $session_id = session_id();
 
 /* ПУБЛИКАЦИЯ ОТЗЫВОВ: */
 if (isset($_POST['post_comment'])) {
-  saveCommentToDb($link, null, strip_tags(trim($_POST['name'])), strip_tags(trim($_POST['text'])), date("d.F.Y H:i:s"), strip_tags(trim($_POST['email'])));
+  $user_id = (int)strip_tags(trim($_COOKIE['user_id']));
+  $comment = strip_tags(trim($_POST['comment']));
+
+  if (saveCommentToDb($link, $user_id, $comment)) {
+    header('Location: comments.php?posted');
+  }
 }
+
+
 
 
 /* АВТОРИЗАЦИЯ ПОЛЬЗОВАТЕЛЕЙ: */
-if (isset($_POST['login'])) {
+
+/* Регистрация */
+if (isset($_POST['regist'])) {
   $login = strip_tags(trim($_POST['login']));
+  $name = strip_tags(trim($_POST['name']));
+  $password = md5(SALT . strip_tags(trim($_POST['password'])) . SALT);
+  $email = strip_tags(trim($_POST['email']));
+  $phone = strip_tags(trim($_POST['phone']));
+
+  if(registrate($link, $login, $name, $password, $email, $phone)){
+    header('Location: authorization.php?success');
+  }
+}
+
+
+/* авторизация */
+if (isset($_POST['auth'])) {
+  $login = strip_tags(trim($_POST['login'])) ?? "";
+  $passUnhash = $_POST['pass'] ?? null;
   $pass = isset($_POST['pass']) ? md5(SALT . strip_tags(trim($_POST['pass'])) . SALT) : "";
-  $remember = $_POST['remember-me'];
 
   $userData = authorize($link, $login, $pass);
-  $role = $userData['role'];
-
-//  if(mysqli_num_rows($result) == 1){
-//    setcookie('login', $login);
-//    setcookie('pass', $pass);
-//    setcookie('role', $role);
-//    header('Location: registration.php?success');
-//  } else {
-//    echo "Вы не зарегистрированны. Зарегистрируйтесь";
-//  }
+  if ($userData) {
+    $role = $userData['role'];
+    $id = $userData['id'];
+    $name = $userData['name'];
+    $email = $userData['email'];
+    $phone = $userData['phone'];
+    setcookie('user_id', $id, time()+3600*24*7, '/');
+    setcookie('login', $login, time()+3600*24*7, '/');
+    setcookie('pass', $pass, time()+3600*24*7, '/');
+    setcookie('pass_unhash', $passUnhash, time()+3600*24*7, '/');
+    setcookie('role', $role, time()+3600*24*7, '/');
+    setcookie('name', $name, time()+3600*24*7, '/');
+    setcookie('email', $email, time()+3600*24*7, '/');
+    setcookie('phone', $phone, time()+3600*24*7, '/');
+    header('Location: account.php');
+  } else {
+    echo "Вы не зарегистрированны. Зарегистрируйтесь";
+  }
 }
+
+/* Выход из аккаунта */
+if (isset($_POST['exit'])){
+  setcookie('login', null, time()-3600*24*8, '/');
+  setcookie('pass', null, time()-3600*24*8, '/');
+  setcookie('pass_unhash', null, -3600*24*8, '/');
+  setcookie('role', null, time()-3600*24*8, '/');
+  setcookie('name', null, time()-3600*24*7, '/');
+  header('Location: authorization.php');
+}
+
+
+
 
 
 /* КОРЗИНА */
@@ -93,7 +137,6 @@ if (isset($_POST['ACTION'])) {
 }
 
 
-
 /* ОФОРМЛЕНИЕ ЗАКАЗА */
 
 if (isset($_POST['form-order'])) {
@@ -114,7 +157,7 @@ if (isset($_POST['form-order'])) {
   ];
 
   $order_id = formOrder($link, $session_id, $userData);
-  if($order_id){
+  if ($order_id) {
 //    if(!isset($_SESSION['order_id'])){
 //    }
     $arr = getOrdersId($link, $session_id);

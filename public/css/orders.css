@@ -1,3 +1,11 @@
 .my-order{
     margin: 20px 0;
 }
+
+.table-orders{
+    width: 100%;
+}
+
+.table-orders th{
+    font-size: 0.7em;
+}
