@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Дек 08 2020 г., 21:11
+-- Время создания: Дек 09 2020 г., 23:11
 -- Версия сервера: 10.3.22-MariaDB
 -- Версия PHP: 7.3.17
 
@@ -54,25 +54,21 @@ INSERT INTO `cart` (`id`, `product_id`, `quantity`, `session_id`, `date_time`) V
 --
 
 CREATE TABLE `comments` (
-  `id` int(10) NOT NULL,
-  `user_id` int(10) DEFAULT NULL,
-  `user_name` varchar(50) NOT NULL,
-  `comment` varchar(1000) NOT NULL,
-  `date` varchar(30) DEFAULT NULL,
-  `email` varchar(30) DEFAULT NULL
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `comment` varchar(5000) NOT NULL,
+  `date_time` timestamp NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Дамп данных таблицы `comments`
 --
 
-INSERT INTO `comments` (`id`, `user_id`, `user_name`, `comment`, `date`, `email`) VALUES
-(23, NULL, 'Антон', 'Первый комментарий!', '17.Sep.2020', '88889997888'),
-(24, NULL, 'Kung Fury', 'Commentariy', '18.Sep.2020', '999'),
-(25, NULL, '111', '111', '18.Sep.2020', '111'),
-(26, NULL, 'Zed', 'zed is dead', '28.September.2020 00:59:20', 'zed@zed.dead'),
-(27, NULL, 'Антон', 'Testing new model', '30.September.2020 00:38:22', 'my@email.com'),
-(28, NULL, 'Anton', 'one more test', '30.September.2020 00:39:01', 'my@email.com');
+INSERT INTO `comments` (`id`, `user_id`, `comment`, `date_time`) VALUES
+(29, 6, 'Мой первый отзыв', '2020-12-09 19:41:10'),
+(30, 6, 'One more time', '2020-12-09 19:46:42'),
+(31, 6, 'Now 100%', '2020-12-09 19:48:40'),
+(32, 6, 'And one morek', '2020-12-09 19:58:30');
 
 -- --------------------------------------------------------
 
@@ -97,7 +93,8 @@ INSERT INTO `customers` (`id`, `session_id`, `name`, `phone`, `date_created`) VA
 (3, 'pnaaa366rahnj7300h9ap4b6qgnvj22j', 'test', 'test', '2020-12-03 22:35:42'),
 (19, 'quv6d4a7ou7mv14b0go0e8rs1k9f8csi', 'lambda', '4455', '2020-12-08 16:35:57'),
 (20, 'nn81mcv8j9ulf72s1fn8v1vq9b3cnceb', 'qwert', '1111122222', '2020-12-08 16:41:12'),
-(21, 'et27kqrg76msiu11vfs9g1aq4hg9k431', 'TONY', '777888999', '2020-12-08 18:08:57');
+(21, 'et27kqrg76msiu11vfs9g1aq4hg9k431', 'TONY', '777888999', '2020-12-08 18:08:57'),
+(22, 'trrr5ea2h9ca6bqro530gvdld6vt03af', 'корг', '0000000', '2020-12-09 09:32:26');
 
 -- --------------------------------------------------------
 
@@ -157,7 +154,8 @@ INSERT INTO `orders` (`id`, `user_id`, `add_info`, `date_time`) VALUES
 (130, 20, 'wqe', '2020-12-08 18:00:31'),
 (131, 20, 'АМ', '2020-12-08 18:05:14'),
 (132, 21, 'FRST', '2020-12-08 18:08:57'),
-(133, 21, 'SCND', '2020-12-08 18:10:16');
+(133, 21, 'SCND', '2020-12-08 18:10:16'),
+(134, 22, 'мы рулим', '2020-12-09 09:32:26');
 
 -- --------------------------------------------------------
 
@@ -196,7 +194,9 @@ INSERT INTO `orders_products` (`order_id`, `product_id`, `quantity`, `date_time`
 (132, 1, 2, '2020-12-08 18:08:57'),
 (132, 3, 2, '2020-12-08 18:08:57'),
 (133, 16, 4, '2020-12-08 18:10:16'),
-(133, 38, 3, '2020-12-08 18:10:16');
+(133, 38, 3, '2020-12-08 18:10:16'),
+(134, 1, 1, '2020-12-09 09:32:26'),
+(134, 38, 1, '2020-12-09 09:32:26');
 
 -- --------------------------------------------------------
 
@@ -206,19 +206,24 @@ INSERT INTO `orders_products` (`order_id`, `product_id`, `quantity`, `date_time`
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `login` varchar(45) NOT NULL,
+  `login` varchar(50) NOT NULL,
+  `name` varchar(45) NOT NULL,
   `password` varchar(32) NOT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `phone` varchar(50) NOT NULL,
   `role` tinyint(4) NOT NULL,
-  `reg_date` timestamp(6) NULL DEFAULT NULL
+  `reg_date` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Дамп данных таблицы `users`
 --
 
-INSERT INTO `users` (`id`, `login`, `password`, `role`, `reg_date`) VALUES
-(1, 'admin', 'c93cd45e0a5dd92cd06d2431c0242975', 0, NULL),
-(2, 'Антон', '5a01d433a4366207d641e58ba4395b71', 1, NULL);
+INSERT INTO `users` (`id`, `login`, `name`, `password`, `email`, `phone`, `role`, `reg_date`) VALUES
+(1, 'admin', 'admin', 'c93cd45e0a5dd92cd06d2431c0242975', NULL, '', 1, NULL),
+(2, 'Антон', 'Антон', '5a01d433a4366207d641e58ba4395b71', NULL, '', 0, NULL),
+(6, 'test', 'test', 'b06d9fecf00b06d3dc20f78d34d33674', 'test@test.ru', '123123', 0, NULL),
+(8, 'qw', 'qw', 'dfb2b8e08dbcb38907c0dda989a4566a', 'qw@qw.qw', '1111111', 0, NULL);
 
 --
 -- Индексы сохранённых таблиц
@@ -278,19 +283,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=225;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=227;
 
 --
 -- AUTO_INCREMENT для таблицы `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT для таблицы `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT для таблицы `goods`
@@ -302,13 +307,13 @@ ALTER TABLE `goods`
 -- AUTO_INCREMENT для таблицы `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=134;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=135;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц

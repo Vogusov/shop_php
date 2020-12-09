@@ -50,7 +50,9 @@ function countGoods($link) {
 
 /* Получение всех комментариев */
 function getAllComments($link) {
-  $query = "select * from `comments` order by `id` desc";
+  $query = "SELECT `comments`.*, `users`.`name` as `name`, `users`.`email` as `email` FROM `shop`.`comments`
+                inner join `users` on `comments`.`user_id` = `users`.`id`
+                order by `date_time` desc;";
   $result = mysqli_query($link, $query);
   if (!$result)
     die(mysqli_error($link));
@@ -62,24 +64,16 @@ function getAllComments($link) {
 
 
 /* Запись комментария в БД */
-function saveCommentToDb($link, $id, $user_name, $comment, $date, $email) {
-  $str = "insert into `comments` (`id`, `user_name`, `comment`, `date`, `email`) values (null, '%s', '%s', '%s', '%s')";
-  $query = sprintf($str, mysqli_escape_string($link, $user_name), mysqli_escape_string($link, $comment), mysqli_escape_string($link, $date), mysqli_escape_string($link, $email));
+function saveCommentToDb($link, $user_id, $comment) {
+  $str = "insert into `comments` (`user_id`, `comment`, `date_time`) values ('%d', '%s', null)";
+  $query = sprintf($str, mysqli_escape_string($link, $user_id), mysqli_escape_string($link, $comment));
   $result = mysqli_query($link, $query);
 
   if (!$result)
     die(mysqli_error($link));
+  return mysqli_affected_rows($link);
 
-  echo "Ваш комментарий успешно опубликован</br>";
-  echo "<a href='comments.php'>Назад к отзывам.</a>";
 }
-
-//  if (!$result) {
-//    die(mysqli_error($link));
-//  } else {
-//    header ("Location: comments.php");
-//  }
-//}
 
 
 /*-- Админка --*/
@@ -124,34 +118,32 @@ function addNewProductToDB($link, $name, $price, $description, $img_name) {
 }
 
 
-/*-- Регистрация, авторизация --*/
+/*-- РЕГИСТРАЦИЯ И АВТОРИЗАЦИЯ --*/
+
+/* Регистрация */
+function registrate($link, $login, $name, $password, $email, $phone) {
+  $str = "INSERT INTO `users`  (`login`, `name`, `password`, `email`, `phone`, `role`, `reg_date`) VALUES ('%s', '%s', '%s', '%s', '%s', 0, null);";
+  $query = sprintf($str, mysqli_escape_string($link, $login), mysqli_escape_string($link, $name), mysqli_escape_string($link, $password), mysqli_escape_string($link, $email), mysqli_escape_string($link, $phone));
+  $result = mysqli_query($link, $query);
+
+  if (!$result) die (mysqli_error($link));
+  return mysqli_affected_rows($link);
+}
+
+
+/* Авторизация */
 // todo: сделать проверку на единство пары Логин-Пароль при регистрации и в БД;
 function authorize($link, $login, $pass) {
-  $query = "select `id`, `role` from `users` where `login` = '$login' and `password` = '$pass';";
+  $query = "select * from `users` where `login` = '$login' and `password` = '$pass';";
   $result = mysqli_query($link, $query) or die('Error in auth request: ' . mysqli_error($link));
   if (!$result) die (mysqli_error($link));
 
   $userData = mysqli_fetch_assoc($result);
-  $role = $userData['role'];
-
-//  if($remember){
-  if (mysqli_num_rows($result) == 1) {
-    setcookie('login', $login);
-    setcookie('pass', $pass);
-    setcookie('role', $role);
-    header('Location: registration.php?success');
-  } else {
-    echo "Вы не зарегистрированны. Зарегистрируйтесь";
-  }
-//  } else {
-//    header('Location: registration.php?success');
-//  }
-
   return $userData;
 }
 
 
-/*-- Корзина --*/
+/*-- КОРЗИНА --*/
 
 /* Добавить в корзину (в БД) */
 function addToCart($link, $product_id, $session_id) {
@@ -330,7 +322,7 @@ function deleteAllFromCart($link, $session_id) {
 
 
 /* Товары из заказа */
-function getGoodsFromOrders($link, $orderId){
+function getGoodsFromOrders($link, $orderId) {
   $query = "SELECT `order_id`, `user_id`, `product_id`, `goods`.`name` as `product_name`, `quantity`, `price`,
        (`quantity` * `price`) as `sum`, `img_name` as `img`, `add_info` as `info`,
        `orders`.`date_time` as `date` FROM `shop`.`orders`
@@ -341,7 +333,7 @@ function getGoodsFromOrders($link, $orderId){
   $result = mysqli_query($link, $query);
   if (!$result) die (mysqli_error($link));
 
-  while($product = mysqli_fetch_assoc($result)){
+  while ($product = mysqli_fetch_assoc($result)) {
     $goods[] = $product;
   }
 
@@ -351,7 +343,7 @@ function getGoodsFromOrders($link, $orderId){
 
 /* Заказы пользователя */
 
-function  getOrdersId($link, $session_id){
+function getOrdersId($link, $session_id) {
   $query = "select orders.id as order_id from orders
     inner join customers on user_id = customers.id
     where session_id = '$session_id';";
@@ -359,14 +351,14 @@ function  getOrdersId($link, $session_id){
   $result = mysqli_query($link, $query);
   if (!$result) die (mysqli_error($link));
 
-  while($id = mysqli_fetch_assoc($result)){
+  while ($id = mysqli_fetch_assoc($result)) {
     $rows[] = $id;
   }
   return $rows;
 }
 
 /* Считаем сумму заказа */
-function countOrderSum($link, $order_id){
+function countOrderSum($link, $order_id) {
   $query = "select sum(`quantity` * `price`) as `order_sum` from `orders_products`
 inner join `goods` on `product_id` = `goods`.`id`
 where `orders_products`.`order_id` = '$order_id'

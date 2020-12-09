@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 include 'models/model.php';
 include 'models/translit-function.php';
