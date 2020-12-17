@@ -5,7 +5,7 @@ include "config/config-db.php";
 
 /*Получение массива со всеми товарами*/
 function getGoods($link, $order = 'asc') {
-  $query = "select * from `goods` order by `id` $order";
+  $query = "select * from `goods` order by `id`  ";
   $result = mysqli_query($link, $query);
   if (!$result)
     die(mysqli_error($link));
