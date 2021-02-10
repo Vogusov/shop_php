@@ -290,7 +290,6 @@ function formOrder($link, $session_id, $userDataArray) {
     mysqli_commit($link);
     return $order_id;
 
-    // todo: 1-чистим корзину, 2-перенаправляем в личный кабинет (страница заказов для незарегистрированного пользователя)
   } catch (mysqli_sql_exception $exception) {
 
     mysqli_rollback($link);
