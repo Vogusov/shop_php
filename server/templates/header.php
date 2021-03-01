@@ -33,11 +33,18 @@
           <p><a href="/server/orders.php">Мои заказы</a></p>
         <?php endif; ?>
         <p>Номер сессии: <?= session_id(); ?></p>
-        <!--        <p>Имя: --><? //= $_SESSION['customer_name']; ?><!--</p>-->
-        <!--        <p>Телефон: --><? //= $_SESSION['customer_phone']; ?><!--</p>-->
+
         <?php foreach ($_SESSION as $key => $value): ?>
+          <?php if(!is_array($value)):?>
           <p><?= "$key: $value"; ?></p>
+
+          <?php else : ?>
+          <p><?php echo "$key: ";
+            foreach ($value as $item){ echo "$item, ";} ?>
+          </p>
+        <?php endif; ?>
         <?php endforeach; ?>
+
       </div>
     </div>
 
