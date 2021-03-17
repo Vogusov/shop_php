@@ -152,14 +152,14 @@ function addToCart($link, $product_id, $session_id) {
 
   // Если нет, то добавляем строку с ним
   if ($count == 0) {
-    $query = "insert into `cart` (`product_id`, `session_id`, `date_time`) value ('$product_id', '$session_id', null);";
+    $query = "insert into `cart` (`product_id`, `session_id`, `date_time`) value ('$product_id', '$session_id', now());";
     $result = mysqli_query($link, $query);
     if (!$result) die (mysqli_error($link));
 
     // Если есть, то увеличиваем его колличество
   } elseif ($count = 1) {
 
-    $query = "update `cart` set `quantity` = `quantity` + 1 , `date_time`= null where `product_id` = '$product_id' AND `session_id` = '$session_id';";
+    $query = "update `cart` set `quantity` = `quantity` + 1 , `date_time`= now() where `product_id` = '$product_id' AND `session_id` = '$session_id';";
     $result = mysqli_query($link, $query);
     if (!$result) die (mysqli_error($link));
 
@@ -220,7 +220,7 @@ function getGoodsFromCart($link, $session_id) {
 
 /* Уменьшить кол-во товара в корзине */
 function reduceInCart($link, $product_id, $session_id) {
-  $query = "update `cart` set `quantity` = `quantity` - 1 , `date_time`= null where `product_id` = '$product_id' AND `session_id` = '$session_id';";
+  $query = "update `cart` set `quantity` = `quantity` - 1 , `date_time`= now() where `product_id` = '$product_id' AND `session_id` = '$session_id';";
   $result = mysqli_query($link, $query);
 
   if (!$result) die (mysqli_error($link));
@@ -258,14 +258,14 @@ function formOrder($link, $session_id, $userDataArray) {
     } else {
       // 1. Если нет такой сессии, значит пользователь новый.
       //    Создаем пользователя по ИД сессии в `customers` с именем и телефоном и присваиваем ИД пользователя.
-      $query_customer = "insert into `customers` (`session_id`, `name`, `phone`, `date_created`) values ('$session_id', '$name', '$phone', null);";
+      $query_customer = "insert into `customers` (`session_id`, `name`, `phone`, `date_created`) values ('$session_id', '$name', '$phone', now());";
       $result_customers = mysqli_query($link, $query_customer);
       if (!$result_customers) die (mysqli_error($link));
       $customer_id = customerExists($link, $session_id);
     }
 
     //  2. Записываем данные в таблицу orders
-    $query_order = "insert into `orders` (`user_id`, `add_info`, `date_time`) values ('$customer_id', '$addInfo', null);";
+    $query_order = "insert into `orders` (`user_id`, `add_info`, `date_time`) values ('$customer_id', '$addInfo', now());";
     $result_order = mysqli_query($link, $query_order);
     // сохраняем новы ИД
     $order_id = (int)mysqli_insert_id($link);
@@ -280,7 +280,7 @@ function formOrder($link, $session_id, $userDataArray) {
     foreach ($cart as $product) {
       $product_id = (int)$product['product_id'];
       $quantity = (int)$product['quantity'];
-      $query_orders_products = "insert into `orders_products` (`order_id`, `product_id`, `quantity`, `date_time`) values ('$order_id', '$product_id', '$quantity', null);";
+      $query_orders_products = "insert into `orders_products` (`order_id`, `product_id`, `quantity`, `date_time`) values ('$order_id', '$product_id', '$quantity', now());";
       $result_orders_products = mysqli_query($link, $query_orders_products);
       if (!$result_orders_products) die (mysqli_error($link));
     }
